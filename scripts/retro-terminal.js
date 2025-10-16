@@ -372,6 +372,23 @@ class RetroTerminal {
     // Store reference for responsive resizing
     this.terminalElement = terminal;
     
+    // Create hidden input for mobile keyboard
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'text';
+    hiddenInput.id = 'hidden-terminal-input';
+    hiddenInput.autocomplete = 'off';
+    hiddenInput.autocorrect = 'off';
+    hiddenInput.autocapitalize = 'off';
+    hiddenInput.spellcheck = false;
+    hiddenInput.style.cssText = `
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    `;
+    
     // Check if bootup has occurred
     const hasBooted = localStorage.getItem('system-booted') === 'true';
     
@@ -397,9 +414,19 @@ class RetroTerminal {
       `;
     }
     
+    terminal.appendChild(hiddenInput);
     this.container.appendChild(terminal);
     this.outputElement = document.getElementById('terminal-output');
     this.inputLineElement = document.getElementById('input-line');
+    this.hiddenInput = hiddenInput;
+    
+    // Sync hidden input with current line
+    hiddenInput.addEventListener('input', (e) => {
+      this.currentLine = e.target.value;
+      if (this.inputLineElement) {
+        this.inputLineElement.textContent = this.currentLine + '█';
+      }
+    });
   }
 
   getPrompt() {
@@ -582,6 +609,8 @@ class RetroTerminal {
         event.preventDefault();
         this.playSound('enter');
         this.processCommand();
+        // Clear hidden input
+        if (this.hiddenInput) this.hiddenInput.value = '';
         break;
         
       case 'Backspace':
@@ -590,6 +619,7 @@ class RetroTerminal {
         if (this.currentLine.length > 0) {
           this.currentLine = this.currentLine.slice(0, -1);
           this.updateDisplay();
+          if (this.hiddenInput) this.hiddenInput.value = this.currentLine;
         }
         break;
         
@@ -597,6 +627,7 @@ class RetroTerminal {
         event.preventDefault();
         this.playSound('tab');
         this.handleTabAutocomplete();
+        if (this.hiddenInput) this.hiddenInput.value = this.currentLine;
         break;
         
       case ' ':
@@ -604,6 +635,7 @@ class RetroTerminal {
         this.playSound('spacebar');
         this.currentLine += ' ';
         this.updateDisplay();
+        if (this.hiddenInput) this.hiddenInput.value = this.currentLine;
         break;
         
       default:
@@ -613,6 +645,7 @@ class RetroTerminal {
           this.playSound('typing');
           this.currentLine += key;
           this.updateDisplay();
+          if (this.hiddenInput) this.hiddenInput.value = this.currentLine;
         }
         break;
     }
@@ -905,6 +938,11 @@ class RetroTerminal {
   focus() {
     // Visual indication that terminal is focused
     this.container.querySelector('.retro-terminal').classList.add('focused');
+    
+    // Focus hidden input for mobile keyboard
+    if (this.hiddenInput) {
+      this.hiddenInput.focus();
+    }
   }
 
   scrollToBottom() {
