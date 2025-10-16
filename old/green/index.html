@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRT Demo</title>
+<style>
+/* -------- Base styling -------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0c1d12;
+  color: #00ff00;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 18px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* -------- Content -------- */
+.crt-body {
+  padding: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+  animation: chroma 1.033s infinite;
+  text-shadow: 0 0 3px;
+}
+
+a {
+  color: #00ff00;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px #00ff00, 0 0 5px #00ff00;
+}
+a:hover {
+  color: #b6ffb6;
+}
+
+/* -------- Overlay layers -------- */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Static scanlines + RGB mask */
+.scanlines {
+  z-index: 5;
+  background:
+    linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%) 0 0 / 100% 2px repeat-y,
+    linear-gradient(90deg, rgba(255,0,0,.06), rgba(0,255,0,.02), rgba(0,0,255,.06)) 0 0 / 3px 100% repeat-x;
+}
+
+/* Sweeping refresh bar */
+.sweep {
+  z-index: 10;
+  height: 2px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.3));
+  transform: translateY(100vh);
+  animation: sweep 7.77s linear infinite;
+  will-change: transform;
+}
+
+/* Flicker overlay */
+.flicker {
+  z-index: 15;
+  background: rgba(9,8,8,0.1);
+  animation: flicker 0.3301s infinite;
+}
+
+/* -------- Animations -------- */
+@keyframes sweep {
+  0%   { transform: translateY(100vh); opacity: .75; }
+  100% { transform: translateY(-2px);  opacity: .75; }
+}
+
+@keyframes flicker {
+  0%{opacity:.12}10%{opacity:.36}15%{opacity:.89}25%{opacity:.35}
+  40%{opacity:.09}50%{opacity:.89}60%{opacity:.20}75%{opacity:.76}
+  85%{opacity:.90}100%{opacity:.78}
+}
+
+/* Chromatic jitter on text */
+@keyframes chroma {
+  0%   { text-shadow: 0.44px 0 1px rgba(0,30,255,.5), -0.44px 0 1px rgba(255,0,80,.3), 0 0 3px; }
+  25%  { text-shadow: 1.61px 0 1px rgba(0,30,255,.5), -1.61px 0 1px rgba(255,0,80,.3), 0 0 3px; }
+  50%  { text-shadow: 0.08px 0 1px rgba(0,30,255,.5), -0.08px 0 1px rgba(255,0,80,.3), 0 0 3px; }
+  75%  { text-shadow: 1.89px 0 1px rgba(0,30,255,.5), -1.89px 0 1px rgba(255,0,80,.3), 0 0 3px; }
+  100% { text-shadow: 2.62px 0 1px rgba(0,30,255,.5), -2.62px 0 1px rgba(255,0,80,.3), 0 0 3px; }
+}
+
+/* Motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .sweep, .flicker, .crt-body { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Overlays -->
+<div class="crt-overlay scanlines"></div>
+<div class="crt-overlay sweep"></div>
+<div class="crt-overlay flicker"></div>
+
+<!-- Main content -->
+<div class="crt-body">
+<pre>
+  ____  ____ _____     _______ ____  _____
+ |  _ \|  _ \_ _\ \   / / ____|  _ \| ____|
+ | |_) | | | | | \ \ / /|  _| | |_) |  _|
+ |  __/| |_| | |  \ V / | |___|  _ <| |___
+ |_|   |____/___|  \_/  |_____|_| \_\_____|
+</pre>
+
+<pre>
+Welcome to the <a href="#">Internet Protocol CTF</a>
+Solve the cryptographic challenges to unlock bonus tracks.
+
+Visit the <a href="#">Help</a> section or join the <a href="#">IRC Chat</a> if you get stuck.
+</pre>
+
+<pre>
+<a href="#">\ALBUM\INTERNET_PROTOCOL</a> [MAIN QUEST]
+<a href="#">\ALBUM\PERSONAL_COMPUTER</a>
+<a href="#">\ALBUM\DEFRAG</a>
+<a href="#">\ALBUM\FLOPPY_DISK_OVERDRIVE</a>
+<a href="#">\ALBUM\INTERRUPT_REQUEST</a>
+</pre>
+
+<pre>
+<a href="#">HOME</a> | <a href="#">TOUR</a> | <a href="#">MUSIC</a> |
+<a href="#">VIDEO</a> | <a href="#">PUZZLE</a> | <a href="#">IRC</a> | <a href="#">CONTACT</a>
+</pre>
+</div>
+
+</body>
+</html>

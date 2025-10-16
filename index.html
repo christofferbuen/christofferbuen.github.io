@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/crt-effects.css" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/controls.css" />
+  <link rel="stylesheet" href="styles/retro-terminal.css" />
+  <link rel="stylesheet" href="styles/settings-modal.css" />
+</head>
+<body>
+  <!-- CRT Effect Overlays (persistent, independent of content) -->
+  <div class="crt-overlay scanlines" aria-hidden="true"></div>
+  <div class="crt-overlay sweep" aria-hidden="true"></div>
+  <div class="crt-overlay flicker" aria-hidden="true"></div>
+
+  <!-- Main content container (populated by portfolio-renderer.js) -->
+  <main class="main" role="main"></main>
+
+  <!-- Scripts (order matters: data → rendering → effects → terminal → filesystem → keybinds → colorschemes → glitch → ansi → settings → unix-commands) -->
+  <script src="scripts/portfolio-data.js"></script>
+  <script src="scripts/portfolio-renderer.js"></script>
+  <script src="scripts/terminal-banner.js"></script>
+  <script src="scripts/bootup-sequence.js"></script>
+  <script src="scripts/crt-effects.js"></script>
+  <script src="scripts/virtual-filesystem.js"></script>
+  <script src="scripts/ansi-colors.js"></script>
+  <script src="scripts/retro-terminal.js"></script>
+  <script src="scripts/terminal-keybinds.js"></script>
+  <script src="scripts/terminal-colorschemes.js"></script>
+  <script src="scripts/terminal-glitch.js"></script>
+  <script src="scripts/settings-modal.js"></script>
+  <script src="scripts/unix-commands.js"></script>
+</body>
+</html>

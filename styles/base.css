@@ -1,0 +1,159 @@
+/* ===== Base Styles ===== */
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg);
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--fg);
+  font: 16px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  overflow: hidden;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, p {
+  margin: 0 0 12px;
+}
+
+h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 8px;
+}
+
+h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 16px;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+/* ===== Links ===== */
+a {
+  color: var(--fg);
+  text-decoration: none;
+  text-shadow: 1px 1px 2px var(--accent), 0 0 5px var(--accent);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #fff;
+  text-shadow: 1px 1px 4px var(--accent), 0 0 8px var(--accent);
+}
+
+/* ===== Content container ===== */
+.main {
+  position: relative;
+  padding: 0;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  min-height: 100vh;
+  height: 100vh;
+  animation: chroma 1.033s infinite;
+  text-shadow: 0 0 3px rgba(255,255,255,.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Project Grid ===== */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.project-card {
+  border: 1px solid var(--accent);
+  padding: 16px;
+  background: rgba(12, 29, 18, 0.5);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 153, 0.1);
+}
+
+.project-card:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 153, 0.3);
+  background: rgba(12, 29, 18, 0.8);
+  transform: translateY(-2px);
+}
+
+.project-card h3 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.project-card p {
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  background: rgba(0, 255, 153, 0.1);
+  border: 1px solid var(--accent);
+  font-size: 0.8em;
+  color: var(--accent);
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 24px 16px;
+  border-top: 1px solid var(--accent);
+  margin-top: 48px;
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  .main {
+    padding: 32px 16px;
+  }
+
+  .projects {
+    grid-template-columns: 1fr;
+  }
+}
