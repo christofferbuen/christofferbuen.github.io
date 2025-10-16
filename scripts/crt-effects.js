@@ -297,14 +297,18 @@ class CRTEffects {
     controls.appendChild(crtTunerBtn);
     controls.appendChild(panel);
     document.body.appendChild(controls);
+    
+    // Store panel reference for external access (terminal commands)
+    this.tunerPanel = panel;
+    this.tunerButton = crtTunerBtn;
   }
 }
 
-// Initialize on DOM ready
+// Initialize on DOM ready and expose globally
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    new CRTEffects();
+    window.crtEffects = new CRTEffects();
   });
 } else {
-  new CRTEffects();
+  window.crtEffects = new CRTEffects();
 }

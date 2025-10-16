@@ -210,27 +210,46 @@
 
 @media (max-width: 768px) {
   .retro-terminal {
-    width: 96vw;
-    height: 90vh;
-    margin: 1rem auto;
-    font-size: 12px;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    margin: 0;
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
   }
   
   .terminal-output {
-    padding: 10px 12px;
+    padding: 12px;
+    /* Allow text selection in terminal */
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .terminal-input-line input {
+    font-size: 16px; /* Prevent iOS zoom on focus */
   }
 }
 
 @media (max-width: 480px) {
   .retro-terminal {
-    width: 98vw;
-    height: 92vh;
-    margin: 0.5rem auto;
-    font-size: 11px;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height */
+    margin: 0;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
   }
   
   .terminal-output {
-    padding: 8px 8px;
+    padding: 8px;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .terminal-input-line input {
+    font-size: 16px; /* Prevent iOS zoom on focus */
   }
 }
 

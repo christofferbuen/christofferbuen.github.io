@@ -5,11 +5,20 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  /* Prevent iOS bounce/overscroll */
+  overscroll-behavior: none;
+  /* Prevent text selection on mobile */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Allow text selection only in terminal */
+  touch-action: manipulation;
 }
 
 html {
   background: var(--bg);
   overflow: hidden;
+  /* iOS Safari safe area */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 body {
@@ -18,6 +27,8 @@ body {
   color: var(--fg);
   font: 16px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   overflow: hidden;
+  /* Prevent tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ===== Typography ===== */

@@ -6,10 +6,10 @@
 class MatrixRain {
   constructor(config = {}) {
     this.config = {
-      enabled: true,
+      enabled: false,         // Start disabled - easter egg!
       density: 0.5,           // 0-1: how many columns have active rain
       speed: 1,               // 0.5-3: speed multiplier
-      characterSet: '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン',
+      characterSet: 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン',
       opacity: 0.3,           // 0-1: overall opacity
       fontSize: 14,           // Font size in pixels
       ...config,

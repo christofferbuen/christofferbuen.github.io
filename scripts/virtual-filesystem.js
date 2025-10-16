@@ -19,7 +19,7 @@ class VirtualFilesystem {
       },
       'contact.info': {
         type: 'file',
-        content: 'Contact Information\n===================\n\nEmail: guest@retro.local\nLocation: The Matrix\nStatus: Online',
+        content: 'Contact Information\n===================\n\nEmail: guest@lucy.local\nLocation: The Matrix\nStatus: Online',
         created: '2025-10-16'
       },
       'skills.dat': {

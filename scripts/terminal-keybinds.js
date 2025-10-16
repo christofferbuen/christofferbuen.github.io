@@ -166,7 +166,7 @@ class TerminalKeybinds {
       const newPrompt = document.createElement('div');
       newPrompt.className = 'terminal-line';
       newPrompt.innerHTML = `
-        <span class="prompt">guest@retro:~$</span>
+        <span class="prompt">guest@lucy:~$</span>
         <span class="input-line" id="input-line"></span>
       `;
       this.terminal.outputElement.appendChild(newPrompt);

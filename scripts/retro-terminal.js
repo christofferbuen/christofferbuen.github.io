@@ -60,6 +60,7 @@ class RetroTerminal {
       
       lines.push('');
       lines.push('Use "man &lt;command&gt;" for more information on a command.');
+      lines.push('<span style="opacity: 0.5">Hint: Some commands are hidden... try exploring!</span>');
       
       return lines.join('\n');
     });
@@ -206,6 +207,43 @@ class RetroTerminal {
       usage: 'matrix',
       description: 'Toggle the Matrix rain effect on/off.',
       examples: ['matrix']
+    }, true); // Hidden easter egg command!
+
+    this.registerCommand('settings', 'Open settings panel', () => {
+      if (window.settingsModal) {
+        window.settingsModal.open();
+        return null; // Don't print output
+      }
+      return 'Settings panel not available';
+    }, ['config', 'preferences'], {
+      usage: 'settings',
+      description: 'Opens the system settings panel.',
+      examples: ['settings', 'config'],
+      notes: ['Aliases: config, preferences']
+    });
+
+    this.registerCommand('crt', 'Open CRT effects tuner', () => {
+      if (window.crtEffects && window.crtEffects.tunerPanel) {
+        const panel = window.crtEffects.tunerPanel;
+        const button = window.crtEffects.tunerButton;
+        const isHidden = panel.hasAttribute('hidden');
+        
+        if (isHidden) {
+          panel.removeAttribute('hidden');
+          button.setAttribute('aria-expanded', 'true');
+          return 'CRT tuner opened';
+        } else {
+          panel.setAttribute('hidden', '');
+          button.setAttribute('aria-expanded', 'false');
+          return 'CRT tuner closed';
+        }
+      }
+      return 'CRT tuner not available';
+    }, ['tuner', 'crtfx'], {
+      usage: 'crt',
+      description: 'Opens the CRT effects tuner panel.',
+      examples: ['crt', 'tuner'],
+      notes: ['Aliases: tuner, crtfx']
     });
 
     this.registerCommand('theme', 'Switch color scheme', (args) => {
@@ -369,7 +407,7 @@ class RetroTerminal {
      * Generate the current prompt with directory
      */
     const dir = this.currentDirectory === '.' ? '~' : this.currentDirectory;
-    return `guest@retro:${dir}$`;
+    return `guest@lucy:${dir}$`;
   }
 
   async initAudio() {
@@ -485,6 +523,16 @@ class RetroTerminal {
       this.focus();
     });
 
+    // Mobile: tap anywhere to focus (for virtual keyboard)
+    if ('ontouchstart' in window) {
+      document.addEventListener('touchstart', (e) => {
+        // Don't interfere with buttons/controls
+        if (!e.target.closest('button, input, select, textarea, .settings-modal, .crt-tuner-panel')) {
+          this.focus();
+        }
+      });
+    }
+
     // Handle keyboard input - always listen for input
     document.addEventListener('keydown', (e) => {
       this.handleKeyPress(e);
@@ -501,38 +549,29 @@ class RetroTerminal {
     window.addEventListener('resize', () => {
       this.handleWindowResize();
     });
+
+    // Handle orientation change on mobile
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => this.handleWindowResize(), 100);
+    });
   }
 
   handleWindowResize() {
     /**
      * Handle responsive terminal sizing on window resize
+     * CSS media queries handle most of the work now
      */
     if (!this.terminalElement) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    // Update terminal element sizing based on viewport
-    if (width < 480) {
-      this.terminalElement.style.width = '98vw';
-      this.terminalElement.style.height = '92vh';
-      this.terminalElement.style.fontSize = '11px';
-    } else if (width < 768) {
-      this.terminalElement.style.width = '96vw';
-      this.terminalElement.style.height = '90vh';
-      this.terminalElement.style.fontSize = '12px';
-    } else if (width < 1024) {
-      this.terminalElement.style.width = '95vw';
-      this.terminalElement.style.height = '85vh';
-      this.terminalElement.style.fontSize = '13px';
-    } else {
-      this.terminalElement.style.width = '95vw';
-      this.terminalElement.style.height = '85vh';
-      this.terminalElement.style.fontSize = '14px';
-    }
-
     // Ensure output scrolls to bottom after resize
     this.outputElement.scrollTop = this.outputElement.scrollHeight;
+    
+    // Force repaint on mobile for proper viewport height
+    if (window.innerWidth < 768) {
+      requestAnimationFrame(() => {
+        this.outputElement.scrollTop = this.outputElement.scrollHeight;
+      });
+    }
   }
 
   handleKeyPress(event) {

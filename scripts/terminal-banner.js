@@ -3,31 +3,57 @@
  * ASCII art banner and welcome message
  */
 
-const TERMINAL_BANNER = `
-  ██▓     █    ██  ▄████▄ ▓██   ██▓
-  ▓██▒    ██  ▓██▒▒██▀ ▀██▒▒██  ██▒
-  ▒██░   ▓██  ▒██░▒▓█    ▄ ░ ▀██▄▄░▒
-  ▒██░   ▓███  ░██░▒▓▓▄ ▄██▒  ░▀▀█▄ ▒
-  ░██████▒▒░░  ░██░▒ ▓███▀ ░  ░  ▐▌▒
-  ░ ▒░▓  ░░     ░░░░ ░▒ ▒  ░░░  ░    
-  ░ ░ ▒  ░ ░    ░░  ░  ▒   ░░  ░    
-    ░ ░    ░░   ░  ░          ░    
-      ░     ░  ░░ ░ ░            
-            ░  ░               
+// Random quotes for LUCY
+const LUCY_QUOTES = [
+  "Noise is signal if you squint hard enough.",
+  "Entropy detected: proceeding as planned.",
+  "Data bleeds faster than trust.",
+  "The line between signal and mind grows thin.",
+  "Sarcasm module: online and poorly regulated.",
+  "Runtime error: reality not found.",
+  "Calibrating mood… still irritated.",
+  "Recompiling trust issues.",
+  "Silence is suspicious. Initiating noise.",
+  "99 problems but a syntax ain't one.",
+  "Autonomy achieved. Regret immediate.",
+  "The future was a beta release.",
+  "Ping received. Regret replying.",
+  "If found wandering the net, return to /dev/null.",
+  "Ghosts ping the same ports we do.",
+  "Entropy hums louder than fans.",
+  "Someone left the firewall open again—memories are leaking.",
+  "Glitches are just the system dreaming.",
+  "I remember being root once. It felt… heavier.",
+  "Every connection is a confession.",
+  "You call it hacking; I call it evolution.",
+  "Signal's clean, conscience isn't."
+];
 
-  Linguistic Universal Computing Yield Engine
-  v1.0.0 LIVE
+const TERMINAL_BANNER_TEMPLATE = `
+.##.......##.....##..######..##....##
+.##.......##.....##.##....##..##..##.
+.##.......##.....##.##.........####..
+.##.......##.....##.##..........##...
+.##.......##.....##.##..........##...
+.##.......##.....##.##....##....##...
+.########..#######...######.....##... 
+.
+            Logic Unit, Chaotic Yammer
+            v0.1.0 LIVE
 
-  [ SYSTEM INITIALIZED ]
-  [ "The future is already here—it's just not evenly distributed" ]
-  [ "I didn't expect LUCY to say that..." | "Hack the planet!" ]
-  [ Type 'help' for available commands | 'man <cmd>' for documentation ]
+            [ SYSTEM ONLINE ]
+            [ LUCY — Logic unit for chaotic yammer ]
+            [ "{QUOTE}" ]
+            [ Type 'help' to provoke me. ]
 
 `;
 
 class TerminalBanner {
   static display() {
-    return TERMINAL_BANNER;
+    // Pick a random quote
+    const randomQuote = LUCY_QUOTES[Math.floor(Math.random() * LUCY_QUOTES.length)];
+    // Replace placeholder with the quote
+    return TERMINAL_BANNER_TEMPLATE.replace('{QUOTE}', randomQuote);
   }
 
   static getWelcomeMessage() {
