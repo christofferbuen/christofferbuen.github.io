@@ -195,11 +195,16 @@ class RetroTerminal {
       notes: ['Outputs exactly what you input']
     });
 
-    this.registerCommand('matrix', 'Show matrix effect', () => {
-      return '<span class="matrix-text">Wake up, Neo...</span>';
+    this.registerCommand('matrix', 'Toggle Matrix rain effect', () => {
+      if (window.matrixRain) {
+        window.matrixRain.toggle();
+        const status = window.matrixRain.config.enabled ? 'enabled' : 'disabled';
+        return `Matrix rain effect ${status}`;
+      }
+      return 'Matrix rain not initialized';
     }, [], {
       usage: 'matrix',
-      description: 'Displays a reference to the Matrix movie.',
+      description: 'Toggle the Matrix rain effect on/off.',
       examples: ['matrix']
     });
 

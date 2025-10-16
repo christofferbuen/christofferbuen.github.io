@@ -49,65 +49,7 @@ class SettingsModal {
           <div class="theme-grid" id="theme-grid"></div>
         </div>
 
-        <!-- CRT EFFECTS SECTION -->
-        <div class="settings-section">
-          <div class="settings-section-title">CRT Effects</div>
-          
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Scanlines</span>
-              <span class="settings-label-description">Enable scanline effect</span>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-scanlines" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
 
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Sweep Bar</span>
-              <span class="settings-label-description">Horizontal sweep animation</span>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-sweep" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Flicker</span>
-              <span class="settings-label-description">Screen flicker effect</span>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-flicker" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Flicker Intensity</span>
-              <span class="settings-label-description">How intense the flicker</span>
-            </div>
-            <div class="settings-slider-container">
-              <input type="range" id="setting-flicker-intensity" class="settings-slider" min="0" max="0.15" step="0.01" />
-              <span class="settings-value-display" id="flicker-intensity-display">0.05</span>
-            </div>
-          </div>
-
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Chromatic Aberration</span>
-              <span class="settings-label-description">RGB color shift effect</span>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-chroma" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-        </div>
 
         <!-- TERMINAL SETTINGS SECTION -->
         <div class="settings-section">
@@ -144,6 +86,22 @@ class SettingsModal {
               <input type="checkbox" id="setting-cursor-blink" />
               <span class="toggle-slider"></span>
             </label>
+          </div>
+        </div>
+
+        <!-- MATRIX RAIN SECTION -->
+        <div class="settings-section">
+          <div class="settings-section-title">Matrix Rain Effect</div>
+          
+          <div class="settings-row">
+            <div class="settings-label">
+              <span class="settings-label-main">Font Size</span>
+              <span class="settings-label-description">Size of falling characters</span>
+            </div>
+            <div class="settings-slider-control">
+              <input type="range" class="settings-slider" id="setting-matrix-fontsize" min="10" max="24" step="1" value="14" />
+              <span class="settings-slider-value" id="matrix-fontsize-value">14px</span>
+            </div>
           </div>
         </div>
 
@@ -224,31 +182,33 @@ class SettingsModal {
         document.getElementById('flicker-intensity-display').textContent = e.target.value;
       });
     }
+
+    // Matrix font size slider
+    const matrixFontSlider = document.getElementById('setting-matrix-fontsize');
+    if (matrixFontSlider) {
+      matrixFontSlider.addEventListener('input', (e) => {
+        document.getElementById('matrix-fontsize-value').textContent = e.target.value + 'px';
+        this.updateSetting(e.target);
+      });
+    }
   }
 
   loadSettings() {
     // Load theme grid
     this.renderThemeGrid();
 
-    // Load CRT effect settings
-    if (window.crtEffects) {
-      document.getElementById('setting-scanlines').checked = window.crtEffects.effects.scanlines;
-      document.getElementById('setting-sweep').checked = window.crtEffects.effects.sweep;
-      document.getElementById('setting-flicker').checked = window.crtEffects.effects.flicker;
-      document.getElementById('setting-chroma').checked = window.crtEffects.effects.chroma;
-    }
-
-    // Load flicker intensity
-    const flickerIntensity = document.documentElement.style.getPropertyValue('--flicker-intensity').trim();
-    if (flickerIntensity) {
-      document.getElementById('setting-flicker-intensity').value = flickerIntensity;
-      document.getElementById('flicker-intensity-display').textContent = flickerIntensity;
-    }
-
     // Load terminal settings from localStorage
     document.getElementById('setting-sounds').checked = localStorage.getItem('terminal-sounds') !== 'false';
     document.getElementById('setting-glitches').checked = localStorage.getItem('terminal-glitches') !== 'false';
     document.getElementById('setting-cursor-blink').checked = localStorage.getItem('terminal-cursor-blink') !== 'false';
+
+    // Load matrix settings
+    const matrixFontSize = localStorage.getItem('matrix-fontsize') || '14';
+    const matrixSlider = document.getElementById('setting-matrix-fontsize');
+    if (matrixSlider) {
+      matrixSlider.value = matrixFontSize;
+      document.getElementById('matrix-fontsize-value').textContent = matrixFontSize + 'px';
+    }
 
     // Update display info
     this.updateDisplayInfo();
@@ -313,21 +273,6 @@ class SettingsModal {
     const value = element.type === 'checkbox' ? element.checked : element.value;
 
     switch (id) {
-      case 'setting-scanlines':
-        if (window.crtEffects) window.crtEffects.setEffect('scanlines', value);
-        break;
-      case 'setting-sweep':
-        if (window.crtEffects) window.crtEffects.setEffect('sweep', value);
-        break;
-      case 'setting-flicker':
-        if (window.crtEffects) window.crtEffects.setEffect('flicker', value);
-        break;
-      case 'setting-chroma':
-        if (window.crtEffects) window.crtEffects.setEffect('chroma', value);
-        break;
-      case 'setting-flicker-intensity':
-        document.documentElement.style.setProperty('--flicker-intensity', value);
-        break;
       case 'setting-sounds':
         localStorage.setItem('terminal-sounds', value);
         break;
@@ -339,6 +284,12 @@ class SettingsModal {
         break;
       case 'setting-cursor-blink':
         localStorage.setItem('terminal-cursor-blink', value);
+        break;
+      case 'setting-matrix-fontsize':
+        localStorage.setItem('matrix-fontsize', value);
+        if (window.matrixRain) {
+          window.matrixRain.setFontSize(parseInt(value));
+        }
         break;
     }
   }
@@ -390,21 +341,10 @@ class SettingsModal {
 
   resetToDefaults() {
     if (confirm('Reset all settings to default? This cannot be undone.')) {
-      // Reset CRT effects
-      if (window.crtEffects) {
-        window.crtEffects.setEffect('scanlines', true);
-        window.crtEffects.setEffect('sweep', true);
-        window.crtEffects.setEffect('flicker', true);
-        window.crtEffects.setEffect('chroma', true);
-      }
-
       // Reset color scheme
       if (window.colorSchemes) {
         window.colorSchemes.setScheme('oldschool');
       }
-
-      // Reset flicker intensity
-      document.documentElement.style.setProperty('--flicker-intensity', '0.05');
 
       // Reset terminal settings
       localStorage.setItem('terminal-sounds', 'true');
