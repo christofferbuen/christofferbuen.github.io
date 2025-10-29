@@ -401,14 +401,25 @@ class SettingsModal {
      * Ultra dramatic filesystem destruction sequence
      */
     return {
-      // Timing (in milliseconds) - Faster for more intensity
-      glitchDuration: 1500,           // Extended glitch for dramatic effect
+      // Timing (in milliseconds) - DRAMATIC PACING with strategic pauses
+      glitchDuration: 2200,           // Longer for more dramatic escalation
       glitchInterval: 40,             // Rapid glitch updates
-      commandDelay: 150,              // Snappy command appearance
-      lineDelay: 60,                  // Fast line animation
-      progressBarSteps: 12,           // More steps for smooth animation
-      progressBarDelay: 120,          // Quick progress updates
-      finalDelay: 600,                // Pause before final message
+      commandDelay: 250,              // Slower reveal for emphasis
+      lineDelay: 120,                 // Slower for readability and tension
+      progressBarSteps: 12,           // Smooth animation
+      progressBarDelay: 180,          // Slower progress for suspense
+      finalDelay: 800,                // Longer pause before final message
+      
+      // EMPHASIS PAUSES - Key dramatic moments (in milliseconds)
+      emphasisPauses: {
+        afterWarning: 600,            // Pause after warning appears
+        afterCommand: 500,            // Pause after rm -rf command
+        beforeProgressBar: 400,       // Pause before progress bar starts
+        afterProgressBar: 700,        // Pause after progress completes
+        beforeSuccess: 500,           // Pause before success messages
+        afterSuccess: 600,            // Pause after success messages
+        beforeAscii: 400              // Pause before ASCII art
+      },
       
       // Visual effects - MAX DRAMA
       glitchIntensity: 0.95,          // Near-max glitch intensity
@@ -416,37 +427,43 @@ class SettingsModal {
       enableCascadeAnimation: true,   // Animated cascade effect
       enableMatrixRain: true,         // Trigger Matrix rain during wipe
       
-      // Messages configuration - HACKER AESTHETIC
+      // Messages configuration - MAXIMUM IMMERSION
       messages: {
-        warning: '⚠️  CRITICAL: INITIATING SYSTEM PURGE SEQUENCE  ⚠️',
+        warning: '⚠️  CRITICAL WARNING: IRREVERSIBLE SYSTEM WIPE INITIATED  ⚠️',
         command: 'root@lucy:~# rm -rf --no-preserve-root /*',
         statusMessages: [
-          'Scanning filesystem...',
-          'Removing system files...',
-          'Purging user data...',
-          'Erasing kernel modules...',
-          'Wiping configuration...',
-          'Clearing caches...',
-          'Destroying backups...',
-          'Overwriting sectors...',
-          'Finalizing deletion...'
+          '> Scanning filesystem structure...',
+          '> Terminating active processes...',
+          '> Dismounting volumes [/home /var /usr]...',
+          '> Purging system binaries...',
+          '> Erasing kernel modules...',
+          '> Wiping user data and configurations...',
+          '> Destroying backup chains...',
+          '> Overwriting disk sectors with zeros...',
+          '> Fragmenting memory regions...',
+          '> Finalizing complete data destruction...'
         ],
-        inProgress: '💥 ━━━ SYSTEM PURGE ACTIVE ━━━ IRREVERSIBLE ━━━ 💥',
-        erasing: '⏳ ZEROING SECTORS ... OVERWRITING DATA ... FRAGMENTING MEMORY ...',
+        inProgress: '━━━━━━━━━ ⚠️  IRREVERSIBLE DELETION IN PROGRESS  ⚠️ ━━━━━━━━━',
+        erasing: '> Zeroing sectors ... Overwriting MBR ... Destroying partition tables ...',
         successMessages: [
           '',
-          '═══════════════════════════════════════════════════════════',
-          '✓ [OK] Filesystem successfully obliterated',
-          '✓ [OK] All data permanently erased',
-          '✓ [OK] System reset to factory defaults',
-          '✓ [OK] Memory sectors zeroed',
-          '✓ [OK] Cache purged',
-          '═══════════════════════════════════════════════════════════',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
           '',
-          '🎯 PURGE COMPLETE. SYSTEM RESET SUCCESSFUL.',
+          '  [✓] Filesystem hierarchy destroyed',
+          '  [✓] All user data obliterated',  
+          '  [✓] System binaries removed',
+          '  [✓] Configuration files purged',
+          '  [✓] Memory sectors zeroed',
+          '  [✓] Cache and logs wiped',
+          '  [✓] Backup chains severed',
+          '',
+          '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+          '',
+          '  >> SYSTEM WIPE COMPLETE. ALL DATA DESTROYED.',
+          '  >> System reset to factory state.',
           ''
         ],
-        welcome: '> Type "help" to begin your fresh start ...',
+        welcome: '',  // No welcome message - keep it silent
         ascii: `
     ██████╗ ██╗   ██╗██████╗  ██████╗ ███████╗
     ██╔══██╗██║   ██║██╔══██╗██╔════╝ ██╔════╝
@@ -565,10 +582,17 @@ class SettingsModal {
           emptyLine.className = 'terminal-line';
           terminal.outputElement.appendChild(emptyLine);
         } else if (item.type === 'progressBar') {
-          // Handle animated progress bar
-          this.animateProgressBar(terminal, config);
-          queueIndex++;
-          setTimeout(processQueue, 50); // Continue immediately after starting animation
+          // PAUSE BEFORE progress bar for dramatic effect
+          setTimeout(() => {
+            // Handle animated progress bar with completion callback
+            this.animateProgressBar(terminal, config, () => {
+              // PAUSE AFTER progress bar completes
+              setTimeout(() => {
+                queueIndex++;
+                processQueue();
+              }, config.emphasisPauses.afterProgressBar);
+            });
+          }, config.emphasisPauses.beforeProgressBar);
           return;
         } else {
           const line = document.createElement('div');
@@ -617,8 +641,28 @@ class SettingsModal {
         // Scroll to bottom
         terminal.outputElement.scrollTop = terminal.outputElement.scrollHeight;
         
-        // Schedule next item
-        const nextDelay = item.delay || config.lineDelay;
+        // Calculate delay with EMPHASIS PAUSES for dramatic effect
+        let nextDelay = item.delay || config.lineDelay;
+        
+        // Add emphasis pauses for key moments
+        if (item.type === 'warning') {
+          // Long pause AFTER warning to let it sink in
+          nextDelay = config.emphasisPauses.afterWarning;
+        } else if (item.type === 'success') {
+          // Pause BEFORE first success separator line
+          if (item.text && item.text.includes('━━━━━━━━━━━━━━') && 
+              queueIndex > 0 && animationQueue[queueIndex - 1].type === 'empty') {
+            nextDelay = config.emphasisPauses.beforeSuccess;
+          }
+          // Pause AFTER "System reset to factory state"
+          if (item.text && item.text.includes('System reset to factory state')) {
+            nextDelay = config.emphasisPauses.afterSuccess;
+          }
+        } else if (item.type === 'ascii') {
+          // Pause BEFORE ASCII art appears
+          nextDelay = config.emphasisPauses.beforeAscii;
+        }
+        
         queueIndex++;
         setTimeout(processQueue, nextDelay);
       } else {
@@ -633,15 +677,39 @@ class SettingsModal {
 
   performGradualGlitchEscalation(terminal, config) {
     /**
-     * Gradually escalating glitch effects from calm to complete chaos
-     * Phase 1: Subtle flicker (0-400ms) - "Something's wrong..."
-     * Phase 2: Growing distortion (400-800ms) - "It's getting worse..."
-     * Phase 3: Violent chaos (800-1400ms) - "SYSTEM FAILURE!"
+     * Gradually escalating glitch effects - ONLY affects success messages and ASCII art!
+     * Lines ABOVE progress bar stay PERFECTLY STILL
+     * Phase 1: Text is STATIC, only subtle screen effects (0-30%)
+     * Phase 2: Text starts moving, light corruption (30-60%)
+     * Phase 3: Text glitches violently, full chaos (60-100%)
      */
     
     let glitchActive = true;
     let startTime = Date.now();
-    const totalDuration = 1400; // Total glitch duration in ms
+    const totalDuration = config.glitchDuration || 2200; // Use config duration for consistency
+    
+    // Find elements to glitch - only success messages, ASCII, and elements AFTER progress bar
+    // We'll create a wrapper for the glitchable content
+    const allChildren = Array.from(terminal.outputElement.children);
+    const glitchableElements = [];
+    let foundProgressBar = false;
+    
+    // Find elements AFTER the progress bar (success messages, ASCII art, etc.)
+    for (let i = 0; i < allChildren.length; i++) {
+      const child = allChildren[i];
+      
+      // Check if this is a progress bar container
+      if (child.textContent.includes('DELETING:') || 
+          child.querySelector && child.querySelector('div[style*="progress"]')) {
+        foundProgressBar = true;
+        continue; // Skip the progress bar itself
+      }
+      
+      // Only glitch elements AFTER progress bar
+      if (foundProgressBar) {
+        glitchableElements.push(child);
+      }
+    }
     
     const applyGlitch = () => {
       if (!glitchActive) return;
@@ -650,60 +718,66 @@ class SettingsModal {
       const progress = Math.min(elapsed / totalDuration, 1); // 0 to 1
       
       // Exponential escalation (starts slow, ends INTENSE)
-      const intensityMultiplier = Math.pow(progress, 2); // Quadratic growth
+      const intensityMultiplier = Math.pow(progress, 2.5); // Even more gradual start
       
-      // PHASE 1 (0-30%): Subtle flickering
-      if (progress < 0.3) {
-        // Very subtle position shifts
-        const shakeX = (Math.random() - 0.5) * 2 * intensityMultiplier;
-        const shakeY = (Math.random() - 0.5) * 2 * intensityMultiplier;
-        terminal.outputElement.style.transform = `translate(${shakeX}px, ${shakeY}px)`;
-        
-        // Occasional flicker
-        if (Math.random() < 0.1) {
-          terminal.outputElement.style.opacity = 0.9 + Math.random() * 0.1;
-        } else {
-          terminal.outputElement.style.opacity = '1';
+      // Apply glitch to each glitchable element individually
+      glitchableElements.forEach(element => {
+        // PHASE 1 (0-30%): TEXT STAYS PERFECTLY STILL - Only subtle screen effects
+        if (progress < 0.3) {
+          // NO movement at all - text is completely static
+          element.style.transform = '';
+          
+          // Only very subtle opacity flicker (barely visible)
+          if (Math.random() < 0.05) {
+            element.style.opacity = 0.95 + Math.random() * 0.05;
+          } else {
+            element.style.opacity = '1';
+          }
+          
+          // No color distortion yet
+          element.style.filter = '';
         }
-      }
-      // PHASE 2 (30-60%): Growing distortion
-      else if (progress < 0.6) {
-        // Moderate shake with rotation
-        const shakeX = (Math.random() - 0.5) * 8 * intensityMultiplier;
-        const shakeY = (Math.random() - 0.5) * 8 * intensityMultiplier;
-        const rotate = (Math.random() - 0.5) * 1 * intensityMultiplier;
-        terminal.outputElement.style.transform = `translate(${shakeX}px, ${shakeY}px) rotate(${rotate}deg)`;
-        
-        // Start color distortion
-        if (config.colorGlitch) {
-          const hue = (Math.random() - 0.5) * 30 * intensityMultiplier;
-          const sat = 1 + (Math.random() - 0.5) * 0.3 * intensityMultiplier;
-          terminal.outputElement.style.filter = `hue-rotate(${hue}deg) saturate(${sat})`;
+        // PHASE 2 (30-60%): Text starts to move and corrupt
+        else if (progress < 0.6) {
+          // Text begins moving - small movements at first
+          const adjustedProgress = (progress - 0.3) / 0.3; // 0-1 within this phase
+          const shakeX = (Math.random() - 0.5) * 6 * adjustedProgress;
+          const shakeY = (Math.random() - 0.5) * 6 * adjustedProgress;
+          const rotate = (Math.random() - 0.5) * 0.8 * adjustedProgress;
+          element.style.transform = `translate(${shakeX}px, ${shakeY}px) rotate(${rotate}deg)`;
+          
+          // Light color distortion appears
+          if (config.colorGlitch) {
+            const hue = (Math.random() - 0.5) * 25 * adjustedProgress;
+            const sat = 1 + (Math.random() - 0.5) * 0.2 * adjustedProgress;
+            element.style.filter = `hue-rotate(${hue}deg) saturate(${sat})`;
+          }
+          
+          // More noticeable flicker
+          element.style.opacity = 0.88 + Math.random() * 0.12;
         }
-        
-        // More frequent flicker
-        terminal.outputElement.style.opacity = 0.85 + Math.random() * 0.15;
-      }
-      // PHASE 3 (60-100%): VIOLENT CHAOS
-      else {
-        // INTENSE shake and rotation
-        const shakeX = (Math.random() - 0.5) * 20 * intensityMultiplier;
-        const shakeY = (Math.random() - 0.5) * 20 * intensityMultiplier;
-        const rotate = (Math.random() - 0.5) * 4 * intensityMultiplier;
-        const scale = 1 + (Math.random() - 0.5) * 0.1 * intensityMultiplier;
-        terminal.outputElement.style.transform = `translate(${shakeX}px, ${shakeY}px) rotate(${rotate}deg) scale(${scale})`;
-        
-        // EXTREME color distortion
-        if (config.colorGlitch) {
-          const hue = (Math.random() - 0.5) * 120 * intensityMultiplier;
-          const sat = 1 + Math.random() * 1.5 * intensityMultiplier;
-          const bright = 0.7 + Math.random() * 0.6;
-          terminal.outputElement.style.filter = `hue-rotate(${hue}deg) saturate(${sat}) brightness(${bright})`;
+        // PHASE 3 (60-100%): VIOLENT TEXT CORRUPTION
+        else {
+          // INTENSE movement - text shakes violently
+          const adjustedProgress = (progress - 0.6) / 0.4; // 0-1 within this phase
+          const shakeX = (Math.random() - 0.5) * 25 * (0.5 + adjustedProgress * 0.5);
+          const shakeY = (Math.random() - 0.5) * 25 * (0.5 + adjustedProgress * 0.5);
+          const rotate = (Math.random() - 0.5) * 5 * (0.5 + adjustedProgress * 0.5);
+          const scale = 1 + (Math.random() - 0.5) * 0.12 * adjustedProgress;
+          element.style.transform = `translate(${shakeX}px, ${shakeY}px) rotate(${rotate}deg) scale(${scale})`;
+          
+          // EXTREME color corruption
+          if (config.colorGlitch) {
+            const hue = (Math.random() - 0.5) * 150 * adjustedProgress;
+            const sat = 1 + Math.random() * 1.8 * adjustedProgress;
+            const bright = 0.65 + Math.random() * 0.7;
+            element.style.filter = `hue-rotate(${hue}deg) saturate(${sat}) brightness(${bright})`;
+          }
+          
+          // Violent flicker
+          element.style.opacity = 0.65 + Math.random() * 0.35;
         }
-        
-        // Rapid flicker
-        terminal.outputElement.style.opacity = 0.7 + Math.random() * 0.3;
-      }
+      });
     };
     
     // Start the gradual escalation
@@ -713,20 +787,25 @@ class SettingsModal {
       glitchActive = false;
       clearInterval(glitchInterval);
       
-      // Reset glitch effects
-      terminal.outputElement.style.transform = '';
-      terminal.outputElement.style.filter = '';
-      terminal.outputElement.style.opacity = '';
+      // Reset glitch effects on all glitchable elements
+      glitchableElements.forEach(element => {
+        element.style.transform = '';
+        element.style.filter = '';
+        element.style.opacity = '';
+      });
       
       // Start CRT shutdown sequence
       this.performCRTShutdown(terminal);
     }, totalDuration);
   }
 
-  animateProgressBar(terminal, config) {
+  animateProgressBar(terminal, config, onComplete) {
     /**
      * Animates a single progress bar that fills from 0-100%
      * with status messages updating as it progresses
+     * @param {Object} terminal - The terminal instance
+     * @param {Object} config - Animation configuration
+     * @param {Function} onComplete - Callback to execute when progress reaches 100%
      */
     
     const statusLine = document.createElement('div');
@@ -795,7 +874,7 @@ class SettingsModal {
     // Animate the progress bar
     let currentProgress = 0;
     const totalSteps = 100;
-    const updateInterval = 30; // Update every 30ms for smooth animation
+    const updateInterval = config.progressBarDelay || 30; // Use config timing for slower animation
     const statusMessages = config.messages.statusMessages;
     let currentStatusIndex = 0;
     
@@ -820,6 +899,11 @@ class SettingsModal {
         
         // Continue animation
         setTimeout(updateProgress, updateInterval);
+      } else {
+        // Progress complete - call the completion callback
+        if (onComplete && typeof onComplete === 'function') {
+          onComplete();
+        }
       }
     };
     
