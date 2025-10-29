@@ -397,76 +397,101 @@ class SettingsModal {
 
   getWipeAnimationConfig() {
     /**
-     * Configuration for the wipe animation
-     * Customize timing, effects, and styling here
+     * Configuration for the CYBERPUNK HACKER-STYLE wipe animation
+     * Ultra dramatic filesystem destruction sequence
      */
     return {
-      // Timing (in milliseconds)
-      glitchDuration: 1200,           // How long the initial screen glitch lasts
-      glitchInterval: 50,             // How often to update glitch effect
-      commandDelay: 200,              // Delay before command line appears
-      lineDelay: 80,                  // Delay between each message line
-      progressBarSteps: 8,            // Number of progress bar updates
-      progressBarDelay: 150,          // Delay between progress updates
-      finalDelay: 500,                // Delay before showing final prompt
+      // Timing (in milliseconds) - Faster for more intensity
+      glitchDuration: 1500,           // Extended glitch for dramatic effect
+      glitchInterval: 40,             // Rapid glitch updates
+      commandDelay: 150,              // Snappy command appearance
+      lineDelay: 60,                  // Fast line animation
+      progressBarSteps: 12,           // More steps for smooth animation
+      progressBarDelay: 120,          // Quick progress updates
+      finalDelay: 600,                // Pause before final message
       
-      // Visual effects
-      glitchIntensity: 0.8,           // 0-1, how intense the glitch is
-      colorGlitch: true,              // Enable hue/saturation shifts during glitch
-      enableCascadeAnimation: true,   // Animate each line appearing
+      // Visual effects - MAX DRAMA
+      glitchIntensity: 0.95,          // Near-max glitch intensity
+      colorGlitch: true,              // Full color chaos
+      enableCascadeAnimation: true,   // Animated cascade effect
+      enableMatrixRain: true,         // Trigger Matrix rain during wipe
       
-      // Messages configuration
+      // Messages configuration - HACKER AESTHETIC
       messages: {
-        warning: '⚠ WARNING: Deleting entire filesystem...',
+        warning: '⚠️  CRITICAL: INITIATING SYSTEM PURGE SEQUENCE  ⚠️',
+        command: 'root@lucy:~# rm -rf --no-preserve-root /*',
         wipePaths: [
-          'Removing: /root',
-          'Removing: /home',
-          'Removing: /etc',
-          'Removing: /var',
-          'Removing: /tmp',
-          'Removing: /usr',
-          'Removing: /bin',
-          'Removing: /lib',
-          'Removing: /boot',
-          'Removing: /dev',
-          'Removing: /sys',
-          'Removing: /proc',
-          'Removing: /opt',
-          'Removing: /srv',
-          'Removing: /mnt',
-          'Removing: /media',
-          'Removing: /run'
+          '🔥 PURGING: /root                  [████████████████████] 100%',
+          '🔥 PURGING: /home                  [████████████████████] 100%',
+          '🔥 PURGING: /etc/config            [████████████████████] 100%',
+          '🔥 PURGING: /var/logs              [████████████████████] 100%',
+          '🔥 PURGING: /tmp/cache             [████████████████████] 100%',
+          '🔥 PURGING: /usr/bin               [████████████████████] 100%',
+          '🔥 PURGING: /bin/system            [████████████████████] 100%',
+          '🔥 PURGING: /lib/modules           [████████████████████] 100%',
+          '🔥 PURGING: /boot/kernel           [████████████████████] 100%',
+          '🔥 PURGING: /dev/hardware          [████████████████████] 100%',
+          '🔥 PURGING: /sys/kernel            [████████████████████] 100%',
+          '🔥 PURGING: /proc/runtime          [████████████████████] 100%',
+          '🔥 PURGING: /opt/applications      [████████████████████] 100%',
+          '🔥 PURGING: /srv/services          [████████████████████] 100%',
+          '🔥 PURGING: /mnt/volumes           [████████████████████] 100%',
+          '💾 WIPING: Memory sectors          [████████████████████] 100%',
+          '💾 WIPING: Cache directories       [████████████████████] 100%',
+          '💾 WIPING: Configuration files     [████████████████████] 100%',
+          '🗑️  ERASING: User data             [████████████████████] 100%',
+          '🗑️  ERASING: System databases      [████████████████████] 100%'
         ],
-        inProgress: '💥 SYSTEM WIPE IN PROGRESS...',
-        erasing: '⏳ Erasing all traces...',
+        inProgress: '💥 ━━━ SYSTEM PURGE ACTIVE ━━━ IRREVERSIBLE ━━━ 💥',
+        erasing: '⏳ ZEROING SECTORS ... OVERWRITING DATA ... FRAGMENTING MEMORY ...',
         successMessages: [
-          '✓ Filesystem successfully wiped',
-          '✓ All data removed',
-          '✓ System reset to defaults'
+          '',
+          '═══════════════════════════════════════════════════════════',
+          '✓ [OK] Filesystem successfully obliterated',
+          '✓ [OK] All data permanently erased',
+          '✓ [OK] System reset to factory defaults',
+          '✓ [OK] Memory sectors zeroed',
+          '✓ [OK] Cache purged',
+          '═══════════════════════════════════════════════════════════',
+          '',
+          '🎯 PURGE COMPLETE. SYSTEM RESET SUCCESSFUL.',
+          ''
         ],
-        welcome: '> Welcome back to a fresh system!'
+        welcome: '> Type "help" to begin your fresh start ...',
+        ascii: `
+    ██████╗ ██╗   ██╗██████╗  ██████╗ ███████╗
+    ██╔══██╗██║   ██║██╔══██╗██╔════╝ ██╔════╝
+    ██████╔╝██║   ██║██████╔╝██║  ███╗█████╗  
+    ██╔═══╝ ██║   ██║██╔══██╗██║   ██║██╔══╝  
+    ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗
+    ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+        `
       },
       
-      // Styling configuration
+      // Styling configuration - CYBERPUNK COLORS
       styles: {
-        command: 'color: #ff6b6b; font-weight: bold; text-shadow: 0 0 10px #ff6b6b;',
-        warning: 'color: #ff6b6b; font-weight: bold; text-shadow: 0 0 15px #ff6b6b;',
-        progress: 'color: #00ff99; font-family: monospace; letter-spacing: 2px; font-weight: bold;',
-        removing: 'color: #ffaa00; opacity: 0.8; font-size: 12px;',
-        success: 'color: #00ff99; font-weight: bold; text-shadow: 0 0 8px #00ff99;',
-        welcome: 'color: var(--accent); font-weight: bold; text-shadow: 0 0 8px var(--accent); margin-top: 8px;'
+        command: 'color: #ff0066; font-weight: 900; text-shadow: 0 0 20px #ff0066, 0 0 40px #ff0066; font-size: 14px; letter-spacing: 1px;',
+        warning: 'color: #ff3366; font-weight: 900; text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366; font-size: 16px; letter-spacing: 2px; animation: pulse 0.5s ease-in-out infinite;',
+        progress: 'color: #00ff99; font-family: monospace; letter-spacing: 1px; font-weight: 700; text-shadow: 0 0 10px #00ff99;',
+        removing: 'color: #ff6600; font-weight: 600; font-size: 13px; text-shadow: 0 0 8px #ff6600; font-family: monospace;',
+        success: 'color: #00ff99; font-weight: 700; text-shadow: 0 0 15px #00ff99, 0 0 30px #00ff99; font-size: 14px;',
+        welcome: 'color: #00ffff; font-weight: 700; text-shadow: 0 0 15px #00ffff; margin-top: 20px; font-size: 15px;',
+        ascii: 'color: #ff0066; font-weight: 700; text-shadow: 0 0 20px #ff0066; font-size: 11px; line-height: 1.2; white-space: pre;'
       }
     };
   }
 
   showDestructiveAnimation(config) {
     /**
-     * Show a configurable rm -rf / animation in the terminal with glitch effects
+     * EPIC CRT SHUTDOWN SEQUENCE WITH TV POWER-OFF EFFECT
+     * Shows system wiping with glitches, then classic CRT turn-off animation
      * @param {Object} config - Animation configuration from getWipeAnimationConfig()
      */
     if (!window.retroTerminal) return;
 
     const terminal = window.retroTerminal;
+    const body = document.body;
+    const main = document.querySelector('.main');
     
     // STEP 1: Clear the terminal screen
     terminal.outputElement.innerHTML = '';
@@ -475,21 +500,11 @@ class SettingsModal {
     // Save original background
     const originalBg = terminal.outputElement.style.backgroundColor;
     
-    // Show the dangerous command first with typing effect
+    // Show the dangerous command first
     const cmdLine = document.createElement('div');
     cmdLine.className = 'terminal-line completed';
     cmdLine.style.cssText = config.styles.command;
-    
-    const promptSpan = document.createElement('span');
-    promptSpan.className = 'prompt';
-    promptSpan.textContent = terminal.getPrompt();
-    
-    const cmdSpan = document.createElement('span');
-    cmdSpan.className = 'command';
-    cmdSpan.textContent = 'rm -rf /';
-    
-    cmdLine.appendChild(promptSpan);
-    cmdLine.appendChild(cmdSpan);
+    cmdLine.textContent = config.messages.command || 'root@lucy:~# rm -rf --no-preserve-root /*';
     terminal.outputElement.appendChild(cmdLine);
     terminal.outputElement.scrollTop = terminal.outputElement.scrollHeight;
 
@@ -552,6 +567,15 @@ class SettingsModal {
       });
     });
     
+    // Add ASCII art if provided
+    if (config.messages.ascii) {
+      animationQueue.push({ type: 'empty' });
+      animationQueue.push({ 
+        type: 'ascii', 
+        text: config.messages.ascii 
+      });
+    }
+    
     // Add welcome message
     animationQueue.push({ type: 'empty' });
     animationQueue.push({ 
@@ -600,6 +624,9 @@ class SettingsModal {
             case 'welcome':
               styleStr = config.styles.welcome;
               break;
+            case 'ascii':
+              styleStr = config.styles.ascii;
+              break;
           }
           
           line.style.cssText = styleStr + (line.style.cssText ? '; ' + line.style.cssText : '');
@@ -633,74 +660,171 @@ class SettingsModal {
           }
         };
 
-        // Intense shake/glitch for a short duration
+        // PHASE 1: Intense shake/glitch (simulating system corruption)
         const glitchInterval = setInterval(applyGlitch, 50);
         setTimeout(() => {
           glitchActive = false;
           clearInterval(glitchInterval);
           
-          // Screen flicker to black and back
-          terminal.outputElement.style.transition = 'opacity 0.1s';
-          terminal.outputElement.style.opacity = '0';
+          // Reset glitch effects
+          terminal.outputElement.style.transform = '';
+          terminal.outputElement.style.filter = '';
           
-          setTimeout(() => {
-            terminal.outputElement.style.opacity = '1';
-            setTimeout(() => {
-              terminal.outputElement.style.opacity = '0';
-              setTimeout(() => {
-                terminal.outputElement.style.opacity = '1';
-                
-                // Reset all effects
-                terminal.outputElement.style.transform = '';
-                terminal.outputElement.style.filter = '';
-                terminal.outputElement.style.transition = '';
-              }, 100);
-            }, 100);
-          }, 100);
-        }, 800); // 800ms of intense shake
-        
-        // Reset filesystem and bootup state
-        setTimeout(() => {
-          if (window.virtualFilesystem) {
-            window.virtualFilesystem.resetToDefaults();
-          }
-          
-          // Reset bootup state to trigger bootup sequence on next load
-          if (window.retroTerminal && window.retroTerminal.bootupSequence) {
-            window.retroTerminal.bootupSequence.resetBootupState();
-          }
-          
-          // Show flashing message
-          const reloadMsg = document.createElement('div');
-          reloadMsg.className = 'terminal-response';
-          reloadMsg.style.cssText = 'color: var(--accent); font-weight: bold; text-align: center; margin-top: 16px; animation: blink 0.6s infinite;';
-          reloadMsg.textContent = 'System wiped. Reload the page to see bootup sequence.';
-          terminal.outputElement.appendChild(reloadMsg);
-          
-          const inputLine = document.createElement('div');
-          inputLine.className = 'terminal-line';
-          
-          const prompt = document.createElement('span');
-          prompt.className = 'prompt';
-          prompt.textContent = terminal.getPrompt();
-          
-          const inputSpan = document.createElement('span');
-          inputSpan.className = 'input-line';
-          inputSpan.id = 'input-line';
-          
-          inputLine.appendChild(prompt);
-          inputLine.appendChild(inputSpan);
-          terminal.outputElement.appendChild(inputLine);
-          
-          terminal.inputLineElement = document.getElementById('input-line');
-          terminal.currentLine = '';
-          terminal.outputElement.scrollTop = terminal.outputElement.scrollHeight;
-        }, 1200); // Delay to show message after shake
+          // PHASE 2: Start CRT shutdown sequence
+          this.performCRTShutdown(terminal);
+        }, 1200); // 1.2 seconds of intense glitching
       }
     };
 
     // Start processing the queue after glitch finishes
     setTimeout(processQueue, config.glitchDuration + config.commandDelay);
+  }
+
+  performCRTShutdown(terminal) {
+    /**
+     * Classic CRT TV shutdown effect:
+     * 1. Screen content fades/shrinks
+     * 2. Collapses to horizontal line
+     * 3. Line shrinks to center dot
+     * 4. Dot fades to black
+     */
+    
+    const body = document.body;
+    const main = document.querySelector('.main');
+    
+    // Create CRT shutdown overlay
+    const shutdownOverlay = document.createElement('div');
+    shutdownOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 9999;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    `;
+    body.appendChild(shutdownOverlay);
+    
+    // Create the white line that will collapse
+    const whiteLine = document.createElement('div');
+    whiteLine.style.cssText = `
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: white;
+      box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.8);
+      opacity: 0;
+    `;
+    shutdownOverlay.appendChild(whiteLine);
+    
+    // STEP 1: Rapid flicker before shutdown (200ms)
+    let flickerCount = 0;
+    const flickerInterval = setInterval(() => {
+      main.style.opacity = flickerCount % 2 === 0 ? '0' : '1';
+      flickerCount++;
+      if (flickerCount > 6) {
+        clearInterval(flickerInterval);
+        main.style.opacity = '1';
+      }
+    }, 30);
+    
+    setTimeout(() => {
+      // STEP 2: Content shrinks vertically with glow (300ms)
+      main.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 1, 1), filter 0.3s ease-out';
+      main.style.transform = 'scaleY(0.02)';
+      main.style.filter = 'brightness(3) blur(2px)';
+      main.style.transformOrigin = 'center';
+      
+      setTimeout(() => {
+        // STEP 3: Flash to white line
+        main.style.opacity = '0';
+        whiteLine.style.opacity = '1';
+        whiteLine.style.transition = 'height 0.4s cubic-bezier(0.4, 0, 0.6, 1), opacity 0.1s';
+        
+        setTimeout(() => {
+          // STEP 4: Line collapses to horizontal line (400ms)
+          whiteLine.style.height = '2px';
+          whiteLine.style.boxShadow = '0 0 20px 4px rgba(255, 255, 255, 0.9)';
+          
+          setTimeout(() => {
+            // STEP 5: Line shrinks to center dot (300ms)
+            whiteLine.style.transition = 'width 0.3s cubic-bezier(0.6, 0, 1, 1), height 0.3s cubic-bezier(0.6, 0, 1, 1), opacity 0.3s ease-out';
+            whiteLine.style.width = '4px';
+            whiteLine.style.height = '4px';
+            whiteLine.style.borderRadius = '50%';
+            whiteLine.style.boxShadow = '0 0 30px 8px rgba(255, 255, 255, 1)';
+            whiteLine.style.left = '50%';
+            whiteLine.style.top = '50%';
+            whiteLine.style.transform = 'translate(-50%, -50%)';
+            
+            setTimeout(() => {
+              // STEP 6: Dot fades to black (200ms)
+              whiteLine.style.opacity = '0';
+              whiteLine.style.boxShadow = 'none';
+              
+              setTimeout(() => {
+                // STEP 7: Complete - Clean up and reset
+                body.removeChild(shutdownOverlay);
+                main.style.cssText = ''; // Reset all styles
+                main.style.opacity = '1';
+                
+                // Reset filesystem and bootup state
+                if (window.virtualFilesystem) {
+                  window.virtualFilesystem.resetToDefaults();
+                }
+                
+                if (window.retroTerminal && window.retroTerminal.bootupSequence) {
+                  window.retroTerminal.bootupSequence.resetBootupState();
+                }
+                
+                // Clear terminal and show reload message
+                terminal.outputElement.innerHTML = '';
+                
+                // Show system wiped message
+                const reloadMsg = document.createElement('div');
+                reloadMsg.className = 'terminal-response';
+                reloadMsg.style.cssText = `
+                  color: var(--accent);
+                  font-weight: bold;
+                  text-align: center;
+                  margin: 40px 0;
+                  font-size: 18px;
+                  text-shadow: 0 0 15px var(--accent);
+                  animation: fadeInPulse 2s ease-in-out infinite;
+                `;
+                reloadMsg.textContent = '✓ SYSTEM WIPED - Press F5 to see bootup sequence';
+                terminal.outputElement.appendChild(reloadMsg);
+                
+                // Re-create input line
+                const inputLine = document.createElement('div');
+                inputLine.className = 'terminal-line';
+                
+                const prompt = document.createElement('span');
+                prompt.className = 'prompt';
+                prompt.textContent = terminal.getPrompt();
+                
+                const inputSpan = document.createElement('span');
+                inputSpan.className = 'input-line';
+                inputSpan.id = 'input-line';
+                
+                inputLine.appendChild(prompt);
+                inputLine.appendChild(inputSpan);
+                terminal.outputElement.appendChild(inputLine);
+                
+                terminal.inputLineElement = document.getElementById('input-line');
+                terminal.currentLine = '';
+                terminal.outputElement.scrollTop = terminal.outputElement.scrollHeight;
+              }, 250); // Wait for dot fade
+            }, 350); // Wait for dot shrink
+          }, 450); // Wait for line collapse
+        }, 50); // Small delay before collapsing
+      }, 350); // Wait for vertical squish
+    }, 250); // Wait for flicker to complete
   }
 
   open() {
