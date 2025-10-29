@@ -1,8 +1,19 @@
 /**
  * Portfolio Projects Configuration
  * Easy to update with your own projects
+ * 
+ * @module PortfolioData
  */
 
+/**
+ * Portfolio data object containing personal information and projects
+ * @typedef {Object} PortfolioData
+ * @property {string} name - Your full name
+ * @property {string} title - Your job title or role
+ * @property {string} bio - A brief biography
+ * @property {Array<{name: string, url: string}>} social - Social media links
+ * @property {Array<{title: string, description: string, tags: string[], url: string}>} projects - Portfolio projects
+ */
 const portfolioData = {
   name: 'Your Name',
   title: 'Security & Systems Engineer',

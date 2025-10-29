@@ -298,13 +298,6 @@ if (typeof window !== 'undefined') {
     if (window.retroTerminal) {
       clearInterval(checkTerminal);
       window.retroTerminal.keybinds = new TerminalKeybinds(window.retroTerminal);
-      console.log('Terminal keybinds initialized. Available:');
-      console.log('  TAB - Autocomplete commands and files');
-      console.log('  CTRL+L - Clear screen');
-      console.log('  CTRL+C - Clear current input');
-      console.log('  CTRL+U - Clear line');
-      console.log('  CTRL+K - Clear line');
-      console.log('  Arrow Up/Down - Navigate command history');
     }
   }, 100);
 }

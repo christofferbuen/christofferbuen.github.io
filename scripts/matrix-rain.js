@@ -1,9 +1,15 @@
 /**
  * Matrix Rain Effect
- * Creates an animated Matrix-style falling characters effect
+ * Creates an animated Matrix-style falling characters background effect
+ * Optional easter egg feature that can be toggled with the 'matrix' command
+ * 
+ * @class MatrixRain
  */
-
 class MatrixRain {
+  /**
+   * Creates a new MatrixRain instance
+   * @param {Object} config - Configuration options for Matrix rain effect
+   */
   constructor(config = {}) {
     this.config = {
       enabled: false,         // Start disabled - easter egg!
@@ -79,18 +85,32 @@ class MatrixRain {
 
     // Set canvas size
     this.resizeCanvas();
-    window.addEventListener('resize', () => this.resizeCanvas());
+    
+    // Debounce resize handler to prevent excessive calls
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => this.resizeCanvas(), 250);
+    });
   }
 
   resizeCanvas() {
     const dpr = this.dpr || 1;
-    this.canvas.width = window.innerWidth * dpr;
-    this.canvas.height = window.innerHeight * dpr;
-    this.canvas.style.width = window.innerWidth + 'px';
-    this.canvas.style.height = window.innerHeight + 'px';
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // Only resize if dimensions actually changed
+    if (this.screenWidth === width && this.screenHeight === height) {
+      return;
+    }
+    
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
+    this.canvas.style.width = width + 'px';
+    this.canvas.style.height = height + 'px';
     this.ctx.scale(dpr, dpr);
-    this.screenWidth = window.innerWidth;
-    this.screenHeight = window.innerHeight;
+    this.screenWidth = width;
+    this.screenHeight = height;
     this.setupColumns();
   }
 

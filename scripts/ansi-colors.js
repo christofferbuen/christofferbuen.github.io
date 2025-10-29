@@ -42,6 +42,10 @@ class ANSIColors {
    * Usage: ansi.colorize('${red}Error${reset}: Something went wrong')
    */
   colorize(text) {
+    if (!text || typeof text !== 'string') {
+      return '';
+    }
+    
     // Replace color tags with span elements
     let html = text;
 

@@ -3,7 +3,15 @@
  * Dynamically renders portfolio content from portfolioData
  */
 
+/**
+ * Renders the portfolio content to the DOM
+ * @param {Object} data - Portfolio data object containing name, title, bio, social, and projects
+ */
 function renderPortfolio(data = portfolioData) {
+  if (!data) {
+    console.error('Portfolio data is undefined');
+    return;
+  }
   const main = document.querySelector('.main') || createMainContainer();
 
   // Clear existing content (keep structure)
@@ -63,6 +71,10 @@ function renderPortfolio(data = portfolioData) {
   }
 }
 
+/**
+ * Creates the main container element if it doesn't exist
+ * @returns {HTMLElement} The main container element
+ */
 function createMainContainer() {
   const main = document.createElement('main');
   main.className = 'main';
@@ -71,9 +83,15 @@ function createMainContainer() {
   return main;
 }
 
+/**
+ * Escapes HTML special characters to prevent XSS
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped HTML-safe text
+ */
 function escapeHtml(text) {
+  if (!text) return '';
   const div = document.createElement('div');
-  div.textContent = text;
+  div.textContent = String(text);
   return div.innerHTML;
 }
 

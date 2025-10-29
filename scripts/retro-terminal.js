@@ -1,9 +1,16 @@
 /**
  * Retro Terminal Typing System
- * Creates a terminal-style interface with authentic typing sounds
+ * Creates a terminal-style interface with authentic typing sounds and command execution
+ * 
+ * @class RetroTerminal
+ * @description Main terminal emulator class that handles user input, command execution,
+ * and terminal rendering with retro CRT aesthetics.
  */
-
 class RetroTerminal {
+  /**
+   * Creates a new RetroTerminal instance
+   * @param {HTMLElement} container - The DOM element to render the terminal in
+   */
   constructor(container) {
     this.container = container;
     this.terminalElement = null; // Will be set in createTerminalInterface
@@ -346,6 +353,10 @@ class RetroTerminal {
     });
   }
 
+  /**
+   * Initializes the terminal interface, filesystem, and audio system
+   * @async
+   */
   async init() {
     this.createTerminalInterface();
     this.filesystem = new VirtualFilesystem();
@@ -360,10 +371,11 @@ class RetroTerminal {
     if (!this.bootupSequence.hasBooted) {
       await this.bootupSequence.playBootupSequence();
     }
-    
-    console.log('RetroTerminal initialized. Custom sound paths can be set via terminal.setSoundPath()');
   }
 
+  /**
+   * Creates and renders the terminal DOM structure
+   */
   createTerminalInterface() {
     // Create terminal container - just the content, no window frame
     const terminal = document.createElement('div');
@@ -480,8 +492,15 @@ class RetroTerminal {
   }
 
   async loadAudioFile(url) {
+    if (!url || !this.audioContext) {
+      return null;
+    }
+    
     try {
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       return audioBuffer;
@@ -520,6 +539,11 @@ class RetroTerminal {
 
   playSound(soundType) {
     if (!this.audioContext) return;
+    
+    // Resume audio context if suspended (required by some browsers)
+    if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume().catch(() => {});
+    }
 
     try {
       let buffer = null;
@@ -651,6 +675,9 @@ class RetroTerminal {
     }
   }
 
+  /**
+   * Processes and executes the current command line input
+   */
   processCommand() {
     // Add current line to history
     this.history.push(this.currentLine);
@@ -729,27 +756,32 @@ class RetroTerminal {
     this.updateDisplay();
   }
 
+  /**
+   * Register a new command in the terminal
+   * 
+   * @param {string} name - Command name
+   * @param {string} description - Brief description shown in help
+   * @param {Function} handler - Function to execute when command is called
+   * @param {string[]} aliases - Alternative names for the command
+   * @param {Object} documentation - Detailed documentation object
+   * @param {boolean} hidden - Whether to hide from help and autocomplete
+   * 
+   * @example
+   * terminal.registerCommand('greet', 'Say hello', () => 'Hello, world!');
+   * 
+   * @example
+   * terminal.registerCommand('test', 'Test command', (args) => {
+   *   return `You said: ${args}`;
+   * }, ['t'], {
+   *   usage: 'test <message>',
+   *   examples: ['test hello', 'test "hello world"'],
+   *   notes: ['This is optional'],
+   *   options: {
+   *     '-v': 'Verbose mode'
+   *   }
+   * });
+   */
   registerCommand(name, description, handler, aliases = [], documentation = null, hidden = false) {
-    /**
-     * Register a new command
-     * 
-     * Usage:
-     *   terminal.registerCommand('greet', 'Say hello', () => 'Hello, world!');
-     *   
-     *   terminal.registerCommand('test', 'Test command', (args) => {
-     *     return `You said: ${args}`;
-     *   }, ['t'], {
-     *     usage: 'test <message>',
-     *     examples: ['test hello', 'test "hello world"'],
-     *     notes: ['This is optional'],
-     *     options: {
-     *       '-v': 'Verbose mode'
-     *     }
-     *   });
-     * 
-     *   // Hidden command (not in help or autocomplete)
-     *   terminal.registerCommand('secret', 'Hidden command', () => 'Found me!', [], null, true);
-     */
     const commandObj = {
       name,
       description,

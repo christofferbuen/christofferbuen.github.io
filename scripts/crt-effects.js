@@ -1,9 +1,15 @@
 /**
  * CRT Effects Configuration and Control System
- * Manages toggleable effects: scanlines, sweep, flicker, chroma
+ * Manages authentic CRT monitor visual effects including scanlines, sweep, flicker, and chroma aberration
+ * Provides real-time toggles and customization with localStorage persistence
+ * 
+ * @class CRTEffects
  */
-
 class CRTEffects {
+  /**
+   * Creates a new CRTEffects instance
+   * @param {Object} config - Configuration overrides for CRT effects
+   */
   constructor(config = {}) {
     // Define defaults
     const defaults = {

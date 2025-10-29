@@ -1,9 +1,15 @@
 /**
  * System Bootup Sequence
- * Displays a dramatic bootup animation on first load or after wipe
+ * Displays a dramatic bootup animation on first load or after system wipe
+ * Creates an authentic retro computer startup experience
+ * 
+ * @class BootupSequence
  */
-
 class BootupSequence {
+  /**
+   * Creates a new BootupSequence instance
+   * @param {RetroTerminal} terminal - The terminal instance to display bootup in
+   */
   constructor(terminal) {
     this.terminal = terminal;
     this.hasBooted = this.checkBootupState();

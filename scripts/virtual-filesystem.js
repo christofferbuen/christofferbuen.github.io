@@ -1,9 +1,14 @@
 /**
- * Retro Terminal Virtual Filesystem
- * Provides a fake filesystem for terminal commands
+ * Virtual Filesystem for Terminal Emulation
+ * Provides a fake filesystem structure with files and directories for terminal commands
+ * Supports localStorage persistence for user modifications
+ * 
+ * @class VirtualFilesystem
  */
-
 class VirtualFilesystem {
+  /**
+   * Creates a new VirtualFilesystem instance with default files and directories
+   */
   constructor() {
     // Default filesystem structure
     this.defaultFilesystem = {
@@ -98,10 +103,22 @@ class VirtualFilesystem {
      * Save filesystem to localStorage
      */
     try {
-      localStorage.setItem('terminal-filesystem', JSON.stringify(this.filesystem));
+      const data = JSON.stringify(this.filesystem);
+      
+      // Check if localStorage has enough space (quota exceeded handling)
+      if (data.length > 5 * 1024 * 1024) {
+        console.warn('Filesystem data is large (>5MB), may exceed quota');
+      }
+      
+      localStorage.setItem('terminal-filesystem', data);
       return true;
     } catch (error) {
       console.error('Error saving filesystem to storage:', error);
+      
+      // If quota exceeded, try to clear old data
+      if (error.name === 'QuotaExceededError') {
+        console.warn('LocalStorage quota exceeded. Filesystem changes will not persist.');
+      }
       return false;
     }
   }
@@ -114,11 +131,12 @@ class VirtualFilesystem {
     this.saveToStorage();
   }
 
+  /**
+   * Retrieves a file from the virtual filesystem
+   * @param {string} path - The file path
+   * @returns {Object|null} File object with type and content, or null if not found
+   */
   getFile(path) {
-    /**
-     * Get a file from the filesystem
-     * Returns: { type: 'file', content: '...' } or null
-     */
     const cleanPath = path.trim().toLowerCase();
     
     if (this.filesystem[cleanPath]) {
@@ -131,11 +149,12 @@ class VirtualFilesystem {
     return null;
   }
 
+  /**
+   * Gets a directory listing
+   * @param {string} path - The directory path (defaults to root)
+   * @returns {string[]|null} Array of filenames/directories, or null if not found
+   */
   getDirectory(path = '.') {
-    /**
-     * Get directory listing
-     * Returns array of filenames or null if not found
-     */
     const cleanPath = path.trim().toLowerCase();
     
     // Root directory listing
@@ -192,9 +211,21 @@ class VirtualFilesystem {
     /**
      * Add a new file to the filesystem
      */
-    this.filesystem[path] = {
+    // Validate path
+    if (!path || typeof path !== 'string') {
+      throw new Error('Invalid file path');
+    }
+    
+    const cleanPath = path.trim().toLowerCase();
+    
+    // Prevent directory paths from being added as files
+    if (cleanPath.endsWith('/')) {
+      throw new Error('Cannot create file with directory path (ends with /)');
+    }
+    
+    this.filesystem[cleanPath] = {
       type: type,
-      content: content,
+      content: content || '',
       created: new Date().toISOString()
     };
     this.saveToStorage();

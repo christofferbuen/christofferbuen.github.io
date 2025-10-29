@@ -9,6 +9,7 @@ class TerminalGlitchEffects {
     this.minGlitchInterval = 30000; // 30 seconds in milliseconds
     this.isGlitching = false;
     this.glitchDuration = 150; // Duration of each glitch in milliseconds
+    this.intervalId = null; // Store interval ID for cleanup
     this.init();
   }
 
@@ -18,7 +19,12 @@ class TerminalGlitchEffects {
   }
 
   startGlitchLoop() {
-    setInterval(() => {
+    // Clear any existing interval first
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+    
+    this.intervalId = setInterval(() => {
       const now = Date.now();
       const timeSinceLastGlitch = now - this.lastGlitchTime;
 
@@ -31,6 +37,16 @@ class TerminalGlitchEffects {
         }
       }
     }, 1000); // Check every 1 second
+  }
+  
+  /**
+   * Cleanup method to stop the glitch loop
+   */
+  destroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
   }
 
   triggerGlitch() {
@@ -139,9 +155,7 @@ window.TerminalGlitchEffects = TerminalGlitchEffects;
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     window.glitchEffects = new TerminalGlitchEffects();
-    console.log('Glitch effects initialized');
   });
 } else {
   window.glitchEffects = new TerminalGlitchEffects();
-  console.log('Glitch effects initialized');
 }

@@ -1,9 +1,14 @@
 /**
  * Settings Modal Controller
- * Comprehensive settings interface for terminal customization
+ * Comprehensive settings interface for terminal customization including
+ * CRT effects, sound, color schemes, and other preferences
+ * 
+ * @class SettingsModal
  */
-
 class SettingsModal {
+  /**
+   * Creates a new SettingsModal instance
+   */
   constructor() {
     this.modalElement = null;
     this.backdropElement = null;
@@ -722,9 +727,7 @@ class SettingsModal {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     window.settingsModal = new SettingsModal();
-    console.log('Settings modal initialized');
   });
 } else {
   window.settingsModal = new SettingsModal();
-  console.log('Settings modal initialized');
 }

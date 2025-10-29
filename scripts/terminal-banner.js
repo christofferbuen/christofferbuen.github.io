@@ -1,9 +1,14 @@
 /**
  * Terminal Banner
- * ASCII art banner and welcome message
+ * ASCII art banner and welcome message with dynamic quotes
+ * 
+ * @module TerminalBanner
  */
 
-// Random quotes for LUCY
+/**
+ * Random quotes for LUCY AI personality
+ * @const {string[]}
+ */
 const LUCY_QUOTES = [
   "Noise is signal if you squint hard enough.",
   "Entropy detected: proceeding as planned.",
@@ -48,7 +53,16 @@ const TERMINAL_BANNER_TEMPLATE = `
 
 `;
 
+/**
+ * Terminal Banner Generator
+ * @class TerminalBanner
+ */
 class TerminalBanner {
+  /**
+   * Generates and returns the terminal banner with a random quote
+   * @static
+   * @returns {string} Formatted banner text with ASCII art
+   */
   static display() {
     // Pick a random quote
     const randomQuote = LUCY_QUOTES[Math.floor(Math.random() * LUCY_QUOTES.length)];
@@ -56,6 +70,11 @@ class TerminalBanner {
     return TERMINAL_BANNER_TEMPLATE.replace('{QUOTE}', randomQuote);
   }
 
+  /**
+   * Generates a time-based welcome message
+   * @static
+   * @returns {string} Personalized welcome message based on time of day
+   */
   static getWelcomeMessage() {
     const hour = new Date().getHours();
     const userName = localStorage.getItem('terminal-user') || 'wanderer';

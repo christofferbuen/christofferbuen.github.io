@@ -1,9 +1,14 @@
 /**
- * Retro Terminal Color Schemes
- * Allows switching between different visual themes
+ * Terminal Color Scheme Manager
+ * Provides multiple retro terminal color themes and handles theme switching
+ * Includes classic CRT monitor colors, cyberpunk themes, and vintage terminal aesthetics
+ * 
+ * @class TerminalColorSchemes
  */
-
 class TerminalColorSchemes {
+  /**
+   * Creates a new TerminalColorSchemes instance with predefined themes
+   */
   constructor() {
     this.schemes = {
       'oldschool': {
@@ -316,10 +321,8 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     window.colorSchemes = new TerminalColorSchemes();
     window.colorSchemes.applyScheme();
-    console.log('Color schemes initialized');
   });
 } else {
   window.colorSchemes = new TerminalColorSchemes();
   window.colorSchemes.applyScheme();
-  console.log('Color schemes initialized');
 }

@@ -65,11 +65,20 @@ class UnixCommands {
 
       const filename = args.toLowerCase().trim();
       
-      // Create file in current directory
-      const fullPath = this.terminal.currentDirectory === '.' ? filename : `${this.terminal.currentDirectory}${filename}`;
+      // Validate filename
+      if (filename.includes('..') || filename.startsWith('/')) {
+        return 'touch: invalid filename';
+      }
       
-      this.filesystem.addFile(fullPath, '', 'file');
-      return `${filename} [created]`;
+      try {
+        // Create file in current directory
+        const fullPath = this.terminal.currentDirectory === '.' ? filename : `${this.terminal.currentDirectory}${filename}`;
+        
+        this.filesystem.addFile(fullPath, '', 'file');
+        return `${filename} [created]`;
+      } catch (error) {
+        return `touch: ${error.message}`;
+      }
     }, [], {
       usage: 'touch <filename>',
       description: 'Create an empty file or update modification time.',
@@ -458,13 +467,11 @@ if (document.readyState === 'loading') {
     setTimeout(() => {
       if (window.retroTerminal && window.virtualFilesystem) {
         window.unixCommands = new UnixCommands(window.retroTerminal, window.virtualFilesystem);
-        console.log('Unix commands initialized');
       }
     }, 100);
   });
 } else {
   if (window.retroTerminal && window.virtualFilesystem) {
     window.unixCommands = new UnixCommands(window.retroTerminal, window.virtualFilesystem);
-    console.log('Unix commands initialized');
   }
 }
