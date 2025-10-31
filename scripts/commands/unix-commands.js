@@ -460,18 +460,9 @@ class UnixCommands {
   }
 }
 
-// Initialize on terminal ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit for terminal and filesystem to be ready
-    setTimeout(() => {
-      if (window.retroTerminal && window.virtualFilesystem) {
-        window.unixCommands = new UnixCommands(window.retroTerminal, window.virtualFilesystem);
-      }
-    }, 100);
+// Initialize when terminal and filesystem are ready using DOMInitializer
+window.onDOMReady(() => {
+  window.domInitializer.waitForGlobals(['retroTerminal', 'virtualFilesystem'], ({ retroTerminal, virtualFilesystem }) => {
+    window.unixCommands = new UnixCommands(retroTerminal, virtualFilesystem);
   });
-} else {
-  if (window.retroTerminal && window.virtualFilesystem) {
-    window.unixCommands = new UnixCommands(window.retroTerminal, window.virtualFilesystem);
-  }
-}
+}, 40); // Priority 40 - after UI commands

@@ -35,22 +35,20 @@ class SettingsModal {
     // Create modal
     this.modalElement = document.createElement('div');
     this.modalElement.className = 'settings-modal';
+    this.modalElement.setAttribute('role', 'dialog');
+    this.modalElement.setAttribute('aria-modal', 'true');
+    this.modalElement.setAttribute('aria-labelledby', 'settings-title');
+    this.modalElement.setAttribute('tabindex', '-1');
     this.modalElement.innerHTML = `
       <div class="settings-modal-header">
-        <h2>⚙ SYSTEM SETTINGS</h2>
-        <button class="settings-modal-close" aria-label="Close settings">✕</button>
+        <h2 id="settings-title">SYSTEM SETTINGS</h2>
+        <button class="settings-modal-close" aria-label="Close settings (ESC)">✕</button>
       </div>
       <div class="settings-modal-content">
         
         <!-- COLOR & THEME SECTION -->
         <div class="settings-section">
           <div class="settings-section-title">Visual Theme</div>
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Color Scheme</span>
-              <span class="settings-label-description">Choose your retro aesthetic</span>
-            </div>
-          </div>
           <div class="theme-grid" id="theme-grid"></div>
         </div>
 
@@ -59,96 +57,98 @@ class SettingsModal {
         <!-- TERMINAL SETTINGS SECTION -->
         <div class="settings-section">
           <div class="settings-section-title">Terminal</div>
-          
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Keyboard Sounds</span>
-              <span class="settings-label-description">Enable audio feedback</span>
+          <div class="settings-section-content">
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Keyboard Sounds</span>
+                <span class="settings-label-description">Enable audio feedback</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="setting-sounds" />
+                <span class="toggle-slider"></span>
+              </label>
             </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-sounds" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
 
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Glitch Effects</span>
-              <span class="settings-label-description">Random visual glitches</span>
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Glitch Effects</span>
+                <span class="settings-label-description">Random visual glitches</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="setting-glitches" />
+                <span class="toggle-slider"></span>
+              </label>
             </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-glitches" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
 
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Cursor Blink</span>
-              <span class="settings-label-description">Animated blinking cursor</span>
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Cursor Blink</span>
+                <span class="settings-label-description">Animated blinking cursor</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="setting-cursor-blink" />
+                <span class="toggle-slider"></span>
+              </label>
             </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="setting-cursor-blink" />
-              <span class="toggle-slider"></span>
-            </label>
           </div>
         </div>
 
         <!-- MATRIX RAIN SECTION -->
         <div class="settings-section">
-          <div class="settings-section-title">Matrix Rain Effect</div>
-          
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Font Size</span>
-              <span class="settings-label-description">Size of falling characters</span>
-            </div>
-            <div class="settings-slider-control">
-              <input type="range" class="settings-slider" id="setting-matrix-fontsize" min="10" max="24" step="1" value="14" />
-              <span class="settings-slider-value" id="matrix-fontsize-value">14px</span>
+          <div class="settings-section-title">Matrix Rain</div>
+          <div class="settings-section-content">
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Font Size</span>
+                <span class="settings-label-description">Size of falling characters</span>
+              </div>
+              <div class="settings-slider-control">
+                <input type="range" class="settings-slider" id="setting-matrix-fontsize" min="10" max="24" step="1" value="14" />
+                <span class="settings-slider-value" id="matrix-fontsize-value">14px</span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- INFORMATION SECTION -->
         <div class="settings-section">
-          <div class="settings-section-title">System Information</div>
-          
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Terminal Version</span>
-              <span class="settings-label-description">Retro Terminal UI</span>
+          <div class="settings-section-title">System Info</div>
+          <div class="settings-section-content">
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Version</span>
+              </div>
+              <span style="font-size: 11px; opacity: 0.7;">v1.0.0</span>
             </div>
-            <span style="font-size: 12px; opacity: 0.7;">v1.0.0</span>
-          </div>
 
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Current Theme</span>
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Current Theme</span>
+              </div>
+              <span style="font-size: 11px; font-weight: bold;" id="current-theme-display">---</span>
             </div>
-            <span style="font-size: 12px; font-weight: bold;" id="current-theme-display">---</span>
-          </div>
 
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Storage Used</span>
-              <span class="settings-label-description">localStorage for preferences</span>
+            <div class="settings-row">
+              <div class="settings-label">
+                <span class="settings-label-main">Storage Used</span>
+              </div>
+              <span style="font-size: 11px;" id="storage-info">---</span>
             </div>
-            <span style="font-size: 12px;" id="storage-info">---</span>
           </div>
         </div>
 
         <!-- MAINTENANCE SECTION -->
         <div class="settings-section">
           <div class="settings-section-title">Maintenance</div>
-          
-          <div class="settings-row">
-            <div class="settings-label">
-              <span class="settings-label-main">Wipe System</span>
-              <span class="settings-label-description">Reset filesystem to default state</span>
+          <div class="settings-section-content">
+            <div class="settings-row" style="border: none; padding-bottom: 0;">
+              <div class="settings-label">
+                <span class="settings-label-main">Wipe System</span>
+                <span class="settings-label-description">Reset filesystem to defaults</span>
+              </div>
             </div>
+            <button class="settings-btn danger" id="settings-wipe" style="width: 100%; margin-top: 8px;">Wipe Filesystem</button>
           </div>
-          <button class="settings-btn danger" id="settings-wipe" style="width: 100%; margin-top: 8px;">Wipe & Reset Filesystem</button>
         </div>
 
         <!-- ACTIONS SECTION -->
@@ -202,13 +202,13 @@ class SettingsModal {
     // Load theme grid
     this.renderThemeGrid();
 
-    // Load terminal settings from localStorage
-    document.getElementById('setting-sounds').checked = localStorage.getItem('terminal-sounds') !== 'false';
-    document.getElementById('setting-glitches').checked = localStorage.getItem('terminal-glitches') !== 'false';
-    document.getElementById('setting-cursor-blink').checked = localStorage.getItem('terminal-cursor-blink') !== 'false';
+    // Load terminal settings from localStorage using StorageManager
+    document.getElementById('setting-sounds').checked = StorageManager.get('terminal-sounds', true);
+    document.getElementById('setting-glitches').checked = StorageManager.get('terminal-glitches', true);
+    document.getElementById('setting-cursor-blink').checked = StorageManager.get('terminal-cursor-blink', true);
 
     // Load matrix settings
-    const matrixFontSize = localStorage.getItem('matrix-fontsize') || '14';
+    const matrixFontSize = StorageManager.get('matrix-fontsize', '14');
     const matrixSlider = document.getElementById('setting-matrix-fontsize');
     if (matrixSlider) {
       matrixSlider.value = matrixFontSize;
@@ -279,19 +279,19 @@ class SettingsModal {
 
     switch (id) {
       case 'setting-sounds':
-        localStorage.setItem('terminal-sounds', value);
+        StorageManager.set('terminal-sounds', value);
         break;
       case 'setting-glitches':
-        localStorage.setItem('terminal-glitches', value);
+        StorageManager.set('terminal-glitches', value);
         if (window.terminalGlitch) {
           window.terminalGlitch.enabled = value;
         }
         break;
       case 'setting-cursor-blink':
-        localStorage.setItem('terminal-cursor-blink', value);
+        StorageManager.set('terminal-cursor-blink', value);
         break;
       case 'setting-matrix-fontsize':
-        localStorage.setItem('matrix-fontsize', value);
+        StorageManager.set('matrix-fontsize', value);
         if (window.matrixRain) {
           window.matrixRain.setFontSize(parseInt(value));
         }
@@ -306,15 +306,9 @@ class SettingsModal {
       document.getElementById('current-theme-display').textContent = currentScheme.name;
     }
 
-    // Update storage info
-    let storageSize = 0;
-    for (const key in localStorage) {
-      if (localStorage.hasOwnProperty(key)) {
-        storageSize += localStorage[key].length + key.length;
-      }
-    }
-    const storageSizeKB = (storageSize / 1024).toFixed(2);
-    document.getElementById('storage-info').textContent = `${storageSizeKB} KB`;
+    // Update storage info using StorageManager
+    const storageInfo = StorageManager.getSize();
+    document.getElementById('storage-info').textContent = `${storageInfo.kb} KB`;
   }
 
   applyChanges() {
@@ -351,10 +345,10 @@ class SettingsModal {
         window.colorSchemes.setScheme('oldschool');
       }
 
-      // Reset terminal settings
-      localStorage.setItem('terminal-sounds', 'true');
-      localStorage.setItem('terminal-glitches', 'true');
-      localStorage.setItem('terminal-cursor-blink', 'true');
+      // Reset terminal settings using StorageManager
+      StorageManager.set('terminal-sounds', true);
+      StorageManager.set('terminal-glitches', true);
+      StorageManager.set('terminal-cursor-blink', true);
 
       // Reload settings display
       this.loadSettings();
@@ -477,7 +471,7 @@ class SettingsModal {
       // Styling configuration - CYBERPUNK COLORS
       styles: {
         command: 'color: #ff0066; font-weight: 900; text-shadow: 0 0 20px #ff0066, 0 0 40px #ff0066; font-size: 14px; letter-spacing: 1px;',
-        warning: 'color: #ff3366; font-weight: 900; text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366; font-size: 16px; letter-spacing: 2px; animation: pulse 0.5s ease-in-out infinite;',
+        warning: 'color: #ff3366; font-weight: 900; text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366; font-size: 16px; letter-spacing: 2px;',
         progress: 'color: #00ff99; font-family: monospace; letter-spacing: 1px; font-weight: 700; text-shadow: 0 0 10px #00ff99;',
         removing: 'color: #ff6600; font-weight: 600; font-size: 13px; text-shadow: 0 0 8px #ff6600; font-family: monospace;',
         success: 'color: #00ff99; font-weight: 700; text-shadow: 0 0 15px #00ff99, 0 0 30px #00ff99; font-size: 14px;',
@@ -1155,11 +1149,30 @@ class SettingsModal {
     this.backdropElement.classList.add('active');
     this.loadSettings();
     document.body.style.overflow = 'hidden';
+    
+    // Add keyboard listener for ESC key
+    this.escKeyHandler = (e) => {
+      if (e.key === 'Escape') {
+        this.close();
+      }
+    };
+    document.addEventListener('keydown', this.escKeyHandler);
+    
+    // Focus the modal for accessibility
+    setTimeout(() => {
+      this.modalElement.focus();
+    }, 100);
   }
 
   close() {
     this.backdropElement.classList.remove('active');
     document.body.style.overflow = '';
+    
+    // Remove keyboard listener
+    if (this.escKeyHandler) {
+      document.removeEventListener('keydown', this.escKeyHandler);
+      this.escKeyHandler = null;
+    }
   }
 
   toggle() {
@@ -1171,11 +1184,7 @@ class SettingsModal {
   }
 }
 
-// Initialize on DOM ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    window.settingsModal = new SettingsModal();
-  });
-} else {
+// Initialize when DOM is ready using DOMInitializer
+window.onDOMReady(() => {
   window.settingsModal = new SettingsModal();
-}
+}, 50); // Priority 50 - after all commands are registered

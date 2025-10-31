@@ -84,43 +84,17 @@ class VirtualFilesystem {
 
   loadFromStorage() {
     /**
-     * Load filesystem from localStorage
+     * Load filesystem from localStorage using StorageManager
      * Returns null if not found
      */
-    try {
-      const stored = localStorage.getItem('terminal-filesystem');
-      if (stored) {
-        return JSON.parse(stored);
-      }
-    } catch (error) {
-      console.error('Error loading filesystem from storage:', error);
-    }
-    return null;
+    return StorageManager.get('terminal-filesystem', null);
   }
 
   saveToStorage() {
     /**
-     * Save filesystem to localStorage
+     * Save filesystem to localStorage using StorageManager
      */
-    try {
-      const data = JSON.stringify(this.filesystem);
-      
-      // Check if localStorage has enough space (quota exceeded handling)
-      if (data.length > 5 * 1024 * 1024) {
-        console.warn('Filesystem data is large (>5MB), may exceed quota');
-      }
-      
-      localStorage.setItem('terminal-filesystem', data);
-      return true;
-    } catch (error) {
-      console.error('Error saving filesystem to storage:', error);
-      
-      // If quota exceeded, try to clear old data
-      if (error.name === 'QuotaExceededError') {
-        console.warn('LocalStorage quota exceeded. Filesystem changes will not persist.');
-      }
-      return false;
-    }
+    return StorageManager.set('terminal-filesystem', this.filesystem);
   }
 
   resetToDefaults() {

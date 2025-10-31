@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="styles/crt-effects.css" />
   <link rel="stylesheet" href="styles/base.css" />
   <link rel="stylesheet" href="styles/controls.css" />
-  <link rel="stylesheet" href="styles/retro-terminal.css" />
-  <link rel="stylesheet" href="styles/settings-modal.css" />
+  <link rel="stylesheet" href="styles/retro-terminal.css?v=2" />
+  <link rel="stylesheet" href="styles/settings-modal.css?v=2" />
 </head>
 <body>
   <!-- CRT Effect Overlays (persistent, independent of content) -->
@@ -23,20 +23,38 @@
   <!-- Main content container (populated by portfolio-renderer.js) -->
   <main class="main" role="main"></main>
 
-  <!-- Scripts (order matters: data → rendering → effects → terminal → filesystem → keybinds → colorschemes → glitch → ansi → settings → unix-commands) -->
-  <script src="scripts/portfolio-data.js"></script>
-  <script src="scripts/portfolio-renderer.js"></script>
-  <script src="scripts/terminal-banner.js"></script>
-  <script src="scripts/bootup-sequence.js"></script>
-  <script src="scripts/crt-effects.js"></script>
-  <script src="scripts/virtual-filesystem.js"></script>
-  <script src="scripts/ansi-colors.js"></script>
-  <script src="scripts/retro-terminal.js"></script>
-  <script src="scripts/terminal-keybinds.js"></script>
-  <script src="scripts/terminal-colorschemes.js"></script>
-  <script src="scripts/matrix-rain.js"></script>
-  <script src="scripts/terminal-glitch.js"></script>
-  <script src="scripts/settings-modal.js"></script>
-  <script src="scripts/unix-commands.js"></script>
+  <!-- Scripts (new organized structure) -->
+  <!-- Load order: utils → config → core → ui → effects → commands -->
+  
+  <!-- Utilities (must load first) -->
+  <script src="scripts/utils/storage-manager.js"></script>
+  <script src="scripts/utils/dom-initializer.js"></script>
+  <script src="scripts/utils/virtual-filesystem.js"></script>
+  <script src="scripts/utils/ansi-colors.js"></script>
+  
+  <!-- Configuration -->
+  <script src="scripts/config/portfolio-data.js"></script>
+  <script src="scripts/config/terminal-colorschemes.js"></script>
+  <script src="scripts/config/terminal-keybinds.js"></script>
+  
+  <!-- Core Terminal -->
+  <script src="scripts/core/retro-terminal.js"></script>
+  
+  <!-- UI Components -->
+  <script src="scripts/ui/portfolio-renderer.js"></script>
+  <script src="scripts/ui/terminal-banner.js"></script>
+  <script src="scripts/ui/bootup-sequence.js?v=2"></script>
+  <script src="scripts/ui/settings-modal.js?v=2"></script>
+  
+  <!-- Effects -->
+  <script src="scripts/effects/crt-effects.js"></script>
+  <script src="scripts/effects/matrix-rain.js"></script>
+  <script src="scripts/effects/terminal-glitch.js"></script>
+  
+  <!-- Commands (loaded last, use DOMInitializer for proper dependency injection) -->
+  <script src="scripts/commands/base-commands.js"></script>
+  <script src="scripts/commands/file-commands.js"></script>
+  <script src="scripts/commands/ui-commands.js"></script>
+  <script src="scripts/commands/unix-commands.js"></script>
 </body>
 </html>

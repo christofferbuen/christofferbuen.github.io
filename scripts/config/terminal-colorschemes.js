@@ -238,14 +238,14 @@ class TerminalColorSchemes {
   }
 
   loadSchemeFromStorage() {
-    const saved = localStorage.getItem('terminal-colorscheme');
+    const saved = StorageManager.get('terminal-colorscheme');
     if (saved && this.schemes[saved]) {
       this.currentScheme = saved;
     }
   }
 
   saveSchemeToStorage() {
-    localStorage.setItem('terminal-colorscheme', this.currentScheme);
+    StorageManager.set('terminal-colorscheme', this.currentScheme);
   }
 
   setScheme(schemeName) {
@@ -316,13 +316,8 @@ class TerminalColorSchemes {
 // Make it globally available
 window.TerminalColorSchemes = TerminalColorSchemes;
 
-// Auto-initialize color schemes when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    window.colorSchemes = new TerminalColorSchemes();
-    window.colorSchemes.applyScheme();
-  });
-} else {
+// Initialize color schemes when DOM is ready using DOMInitializer
+window.onDOMReady(() => {
   window.colorSchemes = new TerminalColorSchemes();
   window.colorSchemes.applyScheme();
-}
+}, 5); // Priority 5 - early initialization

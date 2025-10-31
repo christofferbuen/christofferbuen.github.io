@@ -14,6 +14,13 @@ class BootupSequence {
     this.terminal = terminal;
     this.hasBooted = this.checkBootupState();
   }
+  
+  isMobile() {
+    /**
+     * Check if the device is mobile (small screen)
+     */
+    return window.innerWidth <= 480;
+  }
 
   checkBootupState() {
     /**
@@ -180,18 +187,31 @@ class BootupSequence {
         const headerLine = document.createElement('div');
         headerLine.className = 'terminal-response';
         
+        // Get mobile-friendly header if on mobile device
+        let headerText = section.header;
+        if (this.isMobile()) {
+          // Replace desktop ASCII box with mobile-friendly version
+          if (headerText.includes('┌─────')) {
+            headerText = '═══════════════════════════════';
+          } else if (headerText.includes('│') && headerText.includes('SYSTEM BOOT SEQUENCE')) {
+            headerText = '   SYSTEM BOOT SEQUENCE';
+          } else if (headerText.includes('└─────')) {
+            headerText = '═══════════════════════════════';
+          }
+        }
+        
         // Style headers (border lines and section titles)
-        if (section.header.includes('─') || section.header.includes('│')) {
+        if (headerText.includes('─') || headerText.includes('│') || headerText.includes('═')) {
           headerLine.style.cssText = config.styles.header;
-        } else if (section.header !== '') {
+        } else if (headerText !== '') {
           headerLine.style.cssText = config.styles.header;
         }
         
-        if (section.header !== '') {
+        if (headerText !== '') {
           output.appendChild(headerLine);
           
           // Show header text instantly
-          headerLine.textContent = section.header;
+          headerLine.textContent = headerText;
           
           this.terminal.scrollToBottom();
         }
