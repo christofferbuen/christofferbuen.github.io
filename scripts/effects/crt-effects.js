@@ -19,8 +19,8 @@ class CRTEffects {
       chroma: true,
       scanlineDarkness: 0.25,
       sweepSpeed: 7.77,
-      flickerIntensity: 0.05,
-      flickerSpeed: 1.2,
+      flickerIntensity: 0.05,  // Flicker intensity (not used for brightness mode)
+      flickerSpeed: 45,         // Very slow - 45 seconds for realistic power fluctuation
       chromaIntensity: 1,
       grilleRed: 0.06,
       grilleGreen: 0.02,
@@ -62,7 +62,6 @@ class CRTEffects {
   applyConfig() {
     this.root.style.setProperty('--scanlines-enabled', this.config.scanlines ? '1' : '0');
     this.root.style.setProperty('--sweep-enabled', this.config.sweep ? '1' : '0');
-    this.root.style.setProperty('--flicker-enabled', this.config.flicker ? '1' : '0');
     this.root.style.setProperty('--flicker-intensity', this.config.flickerIntensity);
     this.root.style.setProperty('--scanline-dark', this.config.scanlineDarkness);
     this.root.style.setProperty('--sweep-period', this.config.sweepSpeed + 's');
@@ -70,6 +69,13 @@ class CRTEffects {
     this.root.style.setProperty('--grille-r', this.config.grilleRed);
     this.root.style.setProperty('--grille-g', this.config.grilleGreen);
     this.root.style.setProperty('--grille-b', this.config.grilleBlue);
+
+    // Flicker is now controlled via body class for brightness animation
+    if (this.config.flicker) {
+      document.body.classList.add('flicker-enabled');
+    } else {
+      document.body.classList.remove('flicker-enabled');
+    }
 
     // Chroma is applied via animation, so we toggle animation and opacity
     const main = document.querySelector('.main');
@@ -220,7 +226,7 @@ class CRTEffects {
     sliders.flickerIntensity = flickInt.slider;
     panelContent.appendChild(flickInt.div);
 
-    const flickSpd = createSlider('Flicker Speed', 'flickerSpeed', 0.5, 3, 0.1, 's');
+    const flickSpd = createSlider('Flicker Speed', 'flickerSpeed', 10, 90, 1, 's');
     sliders.flickerSpeed = flickSpd.slider;
     panelContent.appendChild(flickSpd.div);
 

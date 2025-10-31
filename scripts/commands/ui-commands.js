@@ -11,6 +11,7 @@ class UICommands {
   registerCommands() {
     this.registerThemeCommand();
     this.registerMatrixCommand();
+    this.registerGlitchCommand();
     this.registerSettingsCommand();
     this.registerCrtCommand();
     this.registerBootupCommand();
@@ -60,17 +61,106 @@ class UICommands {
   }
 
   registerMatrixCommand() {
-    this.terminal.registerCommand('matrix', 'Toggle Matrix rain effect', () => {
-      if (window.matrixRain) {
-        window.matrixRain.toggle();
-        const status = window.matrixRain.config.enabled ? 'enabled' : 'disabled';
-        return `Matrix rain effect ${status}`;
+    this.terminal.registerCommand('matrix', 'Toggle Matrix rain effect', (args) => {
+      if (!window.matrixRainV2) {
+        return 'Matrix rain not initialized';
       }
-      return 'Matrix rain not initialized';
+
+      const matrix = window.matrixRainV2;
+
+      // Handle subcommands
+      if (args) {
+        const [subcommand, value] = args.toLowerCase().trim().split(/\s+/);
+        
+        switch (subcommand) {
+          case 'cluster':
+          case 'clusters':
+            const clusterStatus = matrix.toggleClusterMode();
+            return `Matrix cluster mode ${clusterStatus ? 'enabled' : 'disabled'}`;
+          
+          case 'cycle':
+          case 'cycling':
+            const cycleStatus = matrix.toggleCharacterCycling();
+            return `Character cycling ${cycleStatus ? 'enabled' : 'disabled'}`;
+          
+          case 'density':
+            if (value !== undefined) {
+              const density = parseFloat(value);
+              if (!isNaN(density) && density >= 0 && density <= 1) {
+                matrix.setOption('density', density);
+                return `Matrix density set to ${density}`;
+              }
+              return 'Density must be between 0 and 1';
+            }
+            return `Current density: ${matrix.config.density}`;
+          
+          case 'speed':
+            if (value !== undefined) {
+              const speed = parseFloat(value);
+              if (!isNaN(speed) && speed >= 0.5 && speed <= 3) {
+                matrix.setOption('speed', speed);
+                return `Matrix speed set to ${speed}`;
+              }
+              return 'Speed must be between 0.5 and 3';
+            }
+            return `Current speed: ${matrix.config.speed}`;
+          
+          case 'status':
+          case 'info':
+            const lines = [
+              'MATRIX RAIN V2 STATUS:',
+              '',
+              `  Enabled:            ${matrix.config.enabled ? 'yes' : 'no'}`,
+              `  Cluster Mode:       ${matrix.config.clusterMode ? 'yes' : 'no'}`,
+              `  Character Cycling:  ${matrix.config.characterCycling ? 'yes' : 'no'}`,
+              `  Density:            ${matrix.config.density}`,
+              `  Speed:              ${matrix.config.speed}`,
+              `  Opacity:            ${matrix.config.opacity}`,
+              '',
+              'Commands:',
+              '  matrix              - toggle on/off',
+              '  matrix cluster      - toggle cluster mode',
+              '  matrix cycle        - toggle character cycling',
+              '  matrix density <n>  - set density (0-1)',
+              '  matrix speed <n>    - set speed (0.5-3)',
+              '  matrix status       - show this info'
+            ];
+            return lines.join('\n');
+          
+          default:
+            return `Unknown matrix command: ${subcommand}. Use "matrix status" for help.`;
+        }
+      }
+
+      // No args - toggle on/off
+      matrix.toggle();
+      const status = matrix.config.enabled ? 'enabled' : 'disabled';
+      return `Matrix rain effect ${status}`;
     }, [], {
-      usage: 'matrix',
-      description: 'Toggle the Matrix rain effect on/off.',
-      examples: ['matrix']
+      usage: 'matrix [cluster|cycle|density <n>|speed <n>|status]',
+      description: 'Toggle Matrix rain V2 effect with cluster rain and character cycling.',
+      examples: [
+        'matrix',
+        'matrix cluster',
+        'matrix cycle',
+        'matrix density 0.7',
+        'matrix speed 1.5',
+        'matrix status'
+      ]
+    }, true); // Hidden easter egg command!
+  }
+
+  registerGlitchCommand() {
+    this.terminal.registerCommand('glitch', 'Trigger glitch effect', () => {
+      if (window.glitchEffects) {
+        window.glitchEffects.triggerGlitchNow();
+        return null; // Visual effect, no output needed
+      }
+      return 'Glitch effects not initialized';
+    }, [], {
+      usage: 'glitch',
+      description: 'Manually trigger the RGB chromatic aberration glitch effect.',
+      examples: ['glitch']
     }, true); // Hidden easter egg command!
   }
 

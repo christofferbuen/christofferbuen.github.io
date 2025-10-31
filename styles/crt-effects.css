@@ -16,7 +16,7 @@
   --flicker-intensity: .05; /* flicker effect strength (0-0.2 recommended) */
 
   /* timings */
-  --flicker-period: 1.2s;
+  --flicker-period: 45s;    /* Very slow for subtle, realistic power fluctuation */
   --sweep-period: 7.77s;
 
   /* geometry */
@@ -30,7 +30,6 @@
   /* effect visibility (controlled by JS) */
   --scanlines-enabled: 1;
   --sweep-enabled: 1;
-  --flicker-enabled: 1;
   --chroma-enabled: 1;
 }
 
@@ -66,12 +65,19 @@
   will-change: transform;
 }
 
-/* 3) global flicker (opacity only) */
+/* 3) global flicker - disable old dark overlay completely */
 .flicker {
   z-index: 15;
-  opacity: calc(var(--flicker-enabled) * var(--flicker-intensity));
-  background: rgba(9,8,8,1);
-  animation: flicker var(--flicker-period) infinite;
+  opacity: 0 !important; /* Force hide the old overlay */
+  pointer-events: none;
+  animation: none !important; /* Disable the old animation */
+  background: none !important; /* Remove dark background */
+  display: none; /* Completely hide it */
+}
+
+/* Apply brightness flicker to entire page when enabled */
+body.flicker-enabled {
+  animation: brightnessFlicker var(--flicker-period) infinite;
 }
 
 /* ===== Animations ===== */
@@ -81,16 +87,22 @@
 }
 
 @keyframes flicker {
-  0%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 0.6)}
-  10%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 1.6)}
-  15%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 3.0)}
-  25%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 1.4)}
-  40%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 0.4)}
-  50%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 3.6)}
-  60%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 1.0)}
-  75%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 2.4)}
-  85%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 3.2)}
-  100%{opacity:calc(var(--flicker-enabled) * var(--flicker-intensity) * 1.8)}
+  /* Old dark overlay animation - deprecated */
+  0%, 100% { opacity: 0; }
+}
+
+@keyframes brightnessFlicker {
+  /* Rare CRT power fluctuation - mostly stable with occasional dips */
+  0%   { filter: brightness(1.0) contrast(1.0); }
+  /* Stable for a long time */
+  40%  { filter: brightness(1.0) contrast(1.0); }
+  /* Brief fluctuation event */
+  42%  { filter: brightness(0.996) contrast(0.998); }
+  44%  { filter: brightness(1.008) contrast(1.004); }
+  46%  { filter: brightness(0.998) contrast(0.999); }
+  48%  { filter: brightness(1.0) contrast(1.0); }
+  /* Back to stable for rest of cycle */
+  100% { filter: brightness(1.0) contrast(1.0); }
 }
 
 /* Subtle red/cyan fringing "breathing" on text */
@@ -104,5 +116,5 @@
 
 /* ===== Accessibility: honour motion preferences ===== */
 @media (prefers-reduced-motion: reduce) {
-  .sweep, .flicker { animation: none !important; }
+  .sweep, .flicker, body.flicker-enabled { animation: none !important; }
 }
